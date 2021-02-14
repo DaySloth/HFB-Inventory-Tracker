@@ -2,3 +2,20 @@
   width: 40%;
   margin: 50px auto;
 }
+
+.mainNav{
+  height: 100px;
+  padding: 10px;
+}
+
+.centerText {
+  text-align: center;
+}
+
+.floatLeft {
+  float: left;
+}
+
+.floatRight {
+  float: right;
+}
