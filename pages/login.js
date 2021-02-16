@@ -24,7 +24,7 @@ export default function Login() {
                         type='password'
                     />
 
-                    <Button content='Login' primary />
+                    <Button content='Login' onClick={() => window.location.href = "/"} primary />
                 </Form>
 
             </div>
