@@ -8,6 +8,11 @@
   padding: 10px;
 }
 
+.center {
+  width: 10rem;
+  margin: 0 auto;
+}
+
 .centerText {
   text-align: center;
 }
