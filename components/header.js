@@ -27,7 +27,7 @@ export default function Header() {
                             </Menu>
                         </div>
                         <div className={styles.floatRight}>
-                            <p>Hello Paige, <span>Logout</span></p>
+                            <h3>Hello Paige, <span>Logout</span></h3>
                         </div>
                     </Grid.Column>
                 </Grid.Row>
