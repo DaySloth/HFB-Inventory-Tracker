@@ -8,6 +8,14 @@
     margin: 50px auto;
 }
 
+.headerLogo {
+    width: 170px;
+    background-color: black;
+    padding: 10px;
+    border-bottom-left-radius: 50%;
+    border-bottom-right-radius: 50%;
+}
+
 .fullWidth {
     width: 100%;
 }
@@ -19,6 +27,9 @@
 .mainNav {
     height: 100px;
     padding: 10px;
+    background-color: black;
+    color: white;
+    margin-bottom: 50px;
 }
 
 .center {
