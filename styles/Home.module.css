@@ -1,26 +1,48 @@
 .container {
-  width: 40%;
-  margin: 50px auto;
+    width: 40%;
+    margin: 50px auto;
 }
 
-.mainNav{
-  height: 100px;
-  padding: 10px;
+.tableContainer {
+    width: 80%;
+    margin: 50px auto;
+}
+
+.fullWidth {
+    width: 100%;
+}
+
+.halfWidth {
+    width: 80%;
+}
+
+.mainNav {
+    height: 100px;
+    padding: 10px;
 }
 
 .center {
-  width: 10rem;
-  margin: 0 auto;
+    width: 10rem;
+    margin: 0 auto;
 }
 
 .centerText {
-  text-align: center;
+    text-align: center;
 }
 
 .floatLeft {
-  float: left;
+    float: left;
 }
 
 .floatRight {
-  float: right;
+    float: right;
+}
+
+.centerButton {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.iconHover {
+    cursor: pointer;
 }
