@@ -1,5 +1,5 @@
 import { Dropdown, Menu, Grid } from "semantic-ui-react";
-import Link from "next/Link";
+import Link from "next/link";
 import styles from "../styles/Home.module.css";
 
 export default function Header() {
