@@ -23,7 +23,7 @@ export default function Header() {
                 <Grid.Row>
                     <Grid.Column>
                         <img
-                            src="/Logo/Circle/HomeForeverBaths-Logo-White.PNG"
+                            src="/HomeForeverBaths-Logo-White.PNG"
                             className={styles.headerLogo}
                         />
                     </Grid.Column>
