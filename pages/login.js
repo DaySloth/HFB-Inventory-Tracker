@@ -1,6 +1,7 @@
-import Head from 'next/head'
-import { Button, Divider, Form, Grid, Segment } from 'semantic-ui-react'
-import styles from '../styles/Home.module.css'
+import Head from "next/head";
+import { Button, Divider, Form, Grid, Segment } from "semantic-ui-react";
+import styles from "../styles/Home.module.css";
+import { signIn, signOut } from "next-auth/client";
 
 export default function Login() {
     return (
@@ -10,24 +11,8 @@ export default function Login() {
             </Head>
 
             <div className={styles.container}>
-                <Form>
-                    <Form.Input
-                        icon='user'
-                        iconPosition='left'
-                        label='Username'
-                        placeholder='Username'
-                    />
-                    <Form.Input
-                        icon='lock'
-                        iconPosition='left'
-                        label='Password'
-                        type='password'
-                    />
-
-                    <Button content='Login' onClick={() => window.location.href = "/"} primary />
-                </Form>
-
+                <Button content="Login" onClick={() => signIn()} primary />
             </div>
         </>
-    )
+    );
 }

@@ -1,9 +1,11 @@
 import { Dropdown, Menu, Grid } from "semantic-ui-react";
 import Link from "next/link";
-import Image from 'next/image'
 import styles from "../styles/Home.module.css";
+import { signOut, useSession } from "next-auth/client";
 
 export default function Header() {
+    const [session, loading] = useSession();
+
     const options = [
         { key: 1, text: <Link href="/">View Warehouse</Link>, value: 1 },
         {
@@ -45,7 +47,13 @@ export default function Header() {
                         </div>
                         <div className={styles.floatRight}>
                             <h3>
-                                Hello Paige, <span>Logout</span>
+                                Hello {session.user.name},{" "}
+                                <span
+                                    className={styles.logout}
+                                    onClick={() => signOut()}
+                                >
+                                    Logout
+                                </span>
                             </h3>
                         </div>
                     </Grid.Column>

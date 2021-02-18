@@ -3,11 +3,15 @@ import NavHeader from "../components/header.js";
 import Login from "./login.js";
 import { Icon, Table, Header, Input } from "semantic-ui-react";
 import styles from "../styles/Home.module.css";
+import { signIn, signOut, useSession } from "next-auth/client";
 
 export default function Home() {
+    const [session, loading] = useSession();
+
+    console.log(session);
     return (
         <>
-            {true ? (
+            {session ? (
                 <>
                     <Head>
                         <title>HFB Inventory | Warehouse</title>

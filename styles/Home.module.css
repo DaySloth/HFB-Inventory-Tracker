@@ -57,3 +57,8 @@
 .iconHover {
     cursor: pointer;
 }
+
+.logout {
+    color: red;
+    cursor: pointer;
+}
