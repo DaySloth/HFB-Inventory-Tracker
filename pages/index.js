@@ -1,17 +1,19 @@
 import Head from "next/head";
 import NavHeader from "../components/header.js";
-import Login from "./login.js";
-import { Icon, Table, Header, Input } from "semantic-ui-react";
+import { Icon, Table, Header, Input, Button } from "semantic-ui-react";
+import { signIn, signOut, useSession } from "next-auth/client";
+import { useEffect } from "react";
 import styles from "../styles/Home.module.css";
 import { signIn, signOut, useSession } from "next-auth/client";
 
 export default function Home() {
-    const [session, loading] = useSession();
+    useEffect(() => {
+        signIn();
+    }, []);
 
-    console.log(session);
     return (
         <>
-            {session ? (
+            {false && (
                 <>
                     <Head>
                         <title>HFB Inventory | Warehouse</title>
@@ -83,8 +85,6 @@ export default function Home() {
                         </Table>
                     </div>
                 </>
-            ) : (
-                <Login />
             )}
         </>
     );
