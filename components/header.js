@@ -1,6 +1,5 @@
 import { Dropdown, Menu, Grid } from "semantic-ui-react";
 import Link from "next/link";
-import Image from 'next/image'
 import styles from "../styles/Home.module.css";
 
 export default function Header() {
@@ -23,11 +22,13 @@ export default function Header() {
             <Grid columns="equal" className={styles.centerText}>
                 <Grid.Row>
                     <Grid.Column>
-                        <img
-                            src="/HomeForeverBaths-Logo-White.png"
-                            alt="Home Forever Baths logo"
-                            className={styles.headerLogo}
-                        />
+                        <Link href="/">
+                            <img
+                                src="/HomeForeverBaths-Logo-White.png"
+                                alt="Home Forever Baths logo"
+                                className={styles.headerLogo}
+                            />
+                        </Link>
                     </Grid.Column>
                     <Grid.Column>
                         <h2>Inventory Management</h2>
