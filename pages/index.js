@@ -4,7 +4,6 @@ import { Icon, Table, Header, Input, Button } from "semantic-ui-react";
 import { signIn, signOut, useSession } from "next-auth/client";
 import { useEffect } from "react";
 import styles from "../styles/Home.module.css";
-import { signIn, signOut, useSession } from "next-auth/client";
 
 export default function Home() {
     useEffect(() => {

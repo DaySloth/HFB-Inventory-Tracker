@@ -12,8 +12,12 @@ export default NextAuth({
                     // submitted and returns either a object representing a user or value
                     // that is false/null if the credentials are invalid.
                     // e.g. return { id: 1, name: 'J Smith', email: 'jsmith@example.com' }
+                    console.log(credentials);
+                    return credentials;
                     return null;
                 };
+
+                user(credentials);
                 if (user) {
                     // Any user object returned here will be saved in the JSON Web Token
                     return user;
