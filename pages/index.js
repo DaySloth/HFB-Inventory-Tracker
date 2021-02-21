@@ -6,13 +6,23 @@ import { useEffect } from "react";
 import styles from "../styles/Home.module.css";
 
 export default function Home() {
+    const [session, loading] = useSession();
+
     useEffect(() => {
-        signIn();
-    }, []);
+        if (loading) {
+            //wait
+        } else {
+            if (session) {
+                console.log(session);
+            } else {
+                signIn();
+            }
+        }
+    }, [loading]);
 
     return (
         <>
-            {false && (
+            {session && (
                 <>
                     <Head>
                         <title>HFB Inventory | Warehouse</title>

@@ -7,19 +7,15 @@ export default NextAuth({
             // The name to display on the sign in form (e.g. 'Sign in with...')
             name: "Credentials",
             async authorize(credentials) {
-                const user = (credentials) => {
-                    // You need to provide your own logic here that takes the credentials
-                    // submitted and returns either a object representing a user or value
-                    // that is false/null if the credentials are invalid.
-                    // e.g. return { id: 1, name: 'J Smith', email: 'jsmith@example.com' }
-                    console.log(credentials);
-                    return credentials;
-                    return null;
+                const user = {
+                    id: 1,
+                    name: "Thee Paige Kerr",
+                    email: "jsmith@example.com",
                 };
 
-                user(credentials);
                 if (user) {
                     // Any user object returned here will be saved in the JSON Web Token
+                    console.log(user);
                     return user;
                 } else {
                     return null;

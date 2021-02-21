@@ -12,7 +12,7 @@ export default function SignIn() {
             </Head>
 
             <div className={styles.container}>
-                <Button content="Sign In" onClick={() => signIn('credentials', {username: 'testuser', password: '12345'})} primary />
+                <Button content="Sign In" onClick={() => signIn('credentials', {username: 'testuser', password: '12345', callbackUrl: 'http://localhost:3000/'})} primary />
             </div>
         </>
     );
