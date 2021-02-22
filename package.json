@@ -8,6 +8,7 @@
     "start": "next start -p $PORT"
   },
   "dependencies": {
+    "axios": "^0.21.1",
     "next": "10.0.6",
     "next-auth": "^3.4.2",
     "react": "^17.0.1",

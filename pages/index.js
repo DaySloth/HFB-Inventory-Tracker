@@ -5,6 +5,7 @@ import { signIn, signOut, useSession } from "next-auth/client";
 import { useEffect } from "react";
 import styles from "../styles/Home.module.css";
 
+
 export default function Home() {
     const [session, loading] = useSession();
 
