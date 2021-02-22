@@ -18,6 +18,14 @@ export default function SignIn() {
             </Head>
 
             <div className={styles.container}>
+                <div className={styles.center}>
+                    <img
+                        src="/HomeForeverBaths-Black-Horz.png"
+                        alt="Home Forever Baths logo"
+                        className={styles.center}
+                    />
+                </div>
+
                 <Form>
                     <Form.Input
                         icon="user"
@@ -34,17 +42,20 @@ export default function SignIn() {
                         onChange={(event) => setPassword(event.target.value)}
                     />
 
-                    <Button
-                        content="Sign In"
-                        onClick={() =>
-                            signIn("credentials", {
-                                username: username,
-                                password: password,
-                                callbackUrl: "http://localhost:3000/",
-                            })
-                        }
-                        primary
-                    />
+                    <div className={styles.center}>
+                        <Button
+                            content="Sign In"
+                            onClick={() =>
+                                signIn("credentials", {
+                                    username: username,
+                                    password: password,
+                                    callbackUrl: "http://localhost:3000/",
+                                })
+                            }
+                            primary
+                            className={styles.center}
+                        />
+                    </div>
                 </Form>
             </div>
         </>

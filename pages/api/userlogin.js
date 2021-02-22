@@ -1,3 +1,3 @@
 export default (req, res) => {
-    res.send("oh hello")
+    res.json({ id: 1, name: "Alexandra", email: "123@test.com" });
 };

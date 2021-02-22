@@ -46,7 +46,6 @@ export default NextAuth({
 
 const login = async (data) => {
     const url = "http://localhost:3000/api/userlogin";
-    const result = await axios.get(url, data);
-    console.log("result", result);
-    return result;
+    const result = await axios.post(url, data);
+    return result.data;
 };
