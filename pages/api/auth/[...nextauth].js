@@ -36,9 +36,9 @@ export default NextAuth({
         }),
     ],
     pages: {
-        signIn: "/auth/signin",
+        signIn: "/authorize/signin",
         signOut: "/auth/signout",
-        error: "/auth/signin", // Error code passed in query string as ?error=
+        error: "/authorize/signin", // Error code passed in query string as ?error=
         verifyRequest: "/auth/verify-request", // (used for check email message)
         newUser: null, // If set, new users will be directed here on first sign in
     },
