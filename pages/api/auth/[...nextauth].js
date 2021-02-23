@@ -24,7 +24,7 @@ export default NextAuth({
                     }
                 } catch (error) {
                     if (error.response) {
-                        console.log(error.response);
+                        //console.log(error.response);
                         Promise.reject(
                             new Error(
                                 "Invalid Username  and Password combination"

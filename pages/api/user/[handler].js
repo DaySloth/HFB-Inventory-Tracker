@@ -18,9 +18,9 @@ export default async (req, res) => {
 
     switch (handler) {
         case "login":
-            const user = await dbUser.find({ email: username });
+            const user = await dbUser.findOne({ email: username });
             console.log("user_:", user);
-            if (user[0]) {
+            if (user) {
                 console.log("found the user");
             } else {
                 console.log("couldn't find user");
