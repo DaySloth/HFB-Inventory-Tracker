@@ -29,11 +29,9 @@ export default function SignIn() {
 
                 <Form>
                     <Form.Input
-                        icon="user"
-                        iconPosition="left"
-                        label="Username"
+                        label="Email"
                         type="email"
-                        placeholder="Username"
+                        placeholder="Your@email.com"
                         onChange={(event) => setUsername(event.target.value)}
                     />
                     <Form.Input
@@ -54,14 +52,10 @@ export default function SignIn() {
 
                     <div className={styles.center}>
                         <Button
-                            content="Sign In"
-                            onClick={() =>
-                                signIn("credentials", {
-                                    username: username,
-                                    password: password,
-                                    callbackUrl: "http://localhost:3000/",
-                                })
-                            }
+                            content="Signup"
+                            onClick={() => {
+                                //call function
+                            }}
                             primary
                             className={styles.center}
                         />

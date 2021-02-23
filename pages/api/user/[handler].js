@@ -14,16 +14,16 @@ export default async (req, res) => {
     switch (handler) {
         case "login":
             const { documents: user } = await Users.find({});
-            console.log("user_:", user);
             if (user) {
                 console.log("found the user");
             } else {
-                console.log("couldn't find user");
+                res.status(400).send("Can't find user");
             }
             break;
 
         case "create":
-            console.log("hitting create");
+            console.log("create");
+            //const newUser = await Users.insert(req.body);
             break;
 
         case "delete":
@@ -32,6 +32,5 @@ export default async (req, res) => {
 
         default:
             console.log("hitting default");
-            mongoose.connection.close();
     }
 };
