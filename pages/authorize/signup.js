@@ -30,9 +30,15 @@ export default function SignUp() {
         setLoading(!loading);
         if (adminPassword === process.env.ADMIN_SIGNUP_PASSWORD) {
             //call to create user
+            const user = {
+                first_name: first_name,
+                last_name: last_name,
+                email: username,
+            };
+
             const url = `${process.env.API_DEFAULT_URL}/api/user/create`;
-            const result = await axios.post(url);
-            console.log(result.data);
+            const newUser = await axios.post(url);
+            console.log(newUser);
         } else {
             //error
             console.log("invalid admin password");
