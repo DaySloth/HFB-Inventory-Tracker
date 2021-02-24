@@ -63,3 +63,14 @@
     color: red;
     cursor: pointer;
 }
+
+.redText {
+    color: red;
+}
+
+.redGlowingBorder input {
+    border: 1.9px solid red !important;
+    border-radius: 7px !important;
+    outline: none !important;
+    box-shadow: 0 0 8px #ed9e9e !important;
+}

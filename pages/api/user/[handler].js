@@ -1,10 +1,6 @@
 import bcrypt from "bcrypt";
-import { connectToDatabase } from "../../../util/mongodb";
 
 export default async (req, res) => {
-    const { db } = await connectToDatabase();
-    const Users = await db.collection("users");
-
     const {
         query: { handler },
     } = req;
@@ -22,7 +18,7 @@ export default async (req, res) => {
             break;
 
         case "create":
-            console.log("create");
+            console.log("create", req.body);
             //const newUser = await Users.insert(req.body);
             break;
 
