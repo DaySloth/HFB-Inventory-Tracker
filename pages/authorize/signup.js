@@ -5,13 +5,13 @@ import styles from "../../styles/Home.module.css";
 import axios from "axios";
 
 export default function SignUp() {
-    const [first_name, setFirstName] = useState();
-    const [last_name, setLastName] = useState();
-    const [username, setUsername] = useState();
-    const [password, setPassword] = useState();
-    const [confirmPassword, setConfirmPassword] = useState();
+    const [first_name, setFirstName] = useState("");
+    const [last_name, setLastName] = useState("");
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
     const [passwordError, setPasswordError] = useState();
-    const [adminPassword, setAdminPassword] = useState();
+    const [adminPassword, setAdminPassword] = useState("");
 
     const [loading, setLoading] = useState(false);
 
@@ -28,17 +28,23 @@ export default function SignUp() {
     const signup = async (event) => {
         event.preventDefault();
         setLoading(!loading);
-        if (adminPassword === process.env.ADMIN_SIGNUP_PASSWORD) {
+        if (!passwordError) {
             //call to create user
             const user = {
                 first_name: first_name,
                 last_name: last_name,
                 email: username,
+                password: password,
+                admin_password: adminPassword,
             };
 
-            const url = `${process.env.API_DEFAULT_URL}/api/user/create`;
-            const newUser = await axios.post(url);
-            console.log(newUser);
+            try {
+                const url = `/api/user/create`;
+                const newUser = await axios.post(url, user);
+                console.log(newUser);
+            } catch (error) {
+                console.log(error);
+            }
         } else {
             //error
             console.log("invalid admin password");
