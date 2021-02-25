@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { useEffect, useState } from "react";
-import { Button, Form, Message } from "semantic-ui-react";
+import { Button, Form, Message, Checkbox } from "semantic-ui-react";
 import styles from "../../styles/Home.module.css";
 import axios from "axios";
 
@@ -8,6 +8,7 @@ export default function SignUp() {
     const [first_name, setFirstName] = useState("");
     const [last_name, setLastName] = useState("");
     const [username, setUsername] = useState("");
+    const [tempPassword, setTempPassword] = useState(false);
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [passwordError, setPasswordError] = useState();
@@ -62,6 +63,7 @@ export default function SignUp() {
                         });
                     } else if (newUser.status === 200) {
                         //set success message
+                        clearForm();
                         setPageMessage({
                             color: "green",
                             message: newUser.msg,
@@ -139,6 +141,13 @@ export default function SignUp() {
                         required
                     />
 
+                    <Checkbox
+                        label="Temporary Password"
+                        className={styles.topBottomSpacing}
+                        onChange={() => setTempPassword(!tempPassword)}
+                        disabled
+                    />
+
                     <Form.Input
                         icon="lock"
                         iconPosition="left"
@@ -200,6 +209,16 @@ export default function SignUp() {
                             primary
                             className={styles.center}
                             loading={loading}
+                        />
+
+                        <Button
+                            content="Clear Form"
+                            onClick={(e) => {
+                                e.preventDefault();
+                                clearForm();
+                            }}
+                            standard="true"
+                            className={styles.center}
                         />
                     </div>
                 </Form>
