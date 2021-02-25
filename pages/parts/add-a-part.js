@@ -19,7 +19,7 @@ export default function AddaPart() {
             if (session) {
                 console.log(session);
             } else {
-                signIn();
+                window.location.href = "/authorize/signin";
             }
         }
     }, [loading]);

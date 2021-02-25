@@ -15,7 +15,7 @@ export default function Home() {
             if (session) {
                 console.log(session);
             } else {
-                signIn();
+                window.location.href = "/authorize/signin"
             }
         }
     }, [loading]);
