@@ -8,6 +8,7 @@ import { useRouter } from "next/router";
 export default function SignIn() {
     const [username, setUsername] = useState();
     const [password, setPassword] = useState();
+    const [loading, setLoading] = useState(false);
 
     const router = useRouter();
     const { error } = router.query;
@@ -47,7 +48,9 @@ export default function SignIn() {
                     {error && (
                         <>
                             <Message color="red">
-                                <Message.Header>{error}</Message.Header>
+                                <Message.Header>
+                                    Invalid username or password
+                                </Message.Header>
                             </Message>
                         </>
                     )}
@@ -55,15 +58,18 @@ export default function SignIn() {
                     <div className={styles.center}>
                         <Button
                             content="Sign In"
-                            onClick={() =>
+                            onClick={() => {
+                                setLoading(true);
                                 signIn("credentials", {
                                     username: username,
                                     password: password,
-                                    callbackUrl: "http://localhost:3000/",
-                                })
-                            }
+                                    callbackUrl:
+                                        "https://hfb-inventory-tracker.herokuapp.com/",
+                                });
+                            }}
                             primary
                             className={styles.center}
+                            loading={loading}
                         />
                     </div>
                 </Form>

@@ -1,6 +1,7 @@
 import NextAuth from "next-auth";
 import Providers from "next-auth/providers";
-import axios from "axios";
+import bcrypt from "bcrypt";
+import { connectToDatabase } from "../../../util/mongodb";
 
 export default NextAuth({
     providers: [
@@ -23,7 +24,7 @@ export default NextAuth({
                         return Promise.resolve(user);
                     }
                 } catch (error) {
-                    if (error.response) {
+                    if (error) {
                         //console.log(error.response);
                         return Promise.reject(
                             "/authorize/signin?error=Invalid username or password"
@@ -43,7 +44,22 @@ export default NextAuth({
 });
 
 const login = async (data) => {
-    const url = `${process.env.API_DEFAULT_URL}/api/user/login`;
-    const result = await axios.post(url, data);
-    return result.data;
+    const { db } = await connectToDatabase();
+    const Users = await db.collection("users");
+    const { username, password } = data;
+    const user = await Users.find({ email: username }).toArray();
+    if (user[0]) {
+        const correctPass = await bcrypt.compare(password, user[0].password);
+
+        if (correctPass) {
+            return {
+                name: user[0].first_name,
+                email: user[0].email,
+            };
+        } else {
+            return null;
+        }
+    } else {
+        return null;
+    }
 };

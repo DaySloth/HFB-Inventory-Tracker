@@ -10,28 +10,6 @@ export default async (req, res) => {
     } = req;
 
     switch (handler) {
-        case "login":
-            const { username, password } = req.body;
-            const user = await Users.find({ email: username }).toArray();
-            if (user[0]) {
-                const correctPass = await bcrypt.compare(
-                    password,
-                    user[0].password
-                );
-
-                if (correctPass) {
-                    res.status(200).send({
-                        name: user[0].first_name,
-                        email: user[0].email,
-                    });
-                } else {
-                    res.status(400).end();
-                }
-            } else {
-                res.status(400).end();
-            }
-            break;
-
         case "create":
             const new_user = req.body;
 
