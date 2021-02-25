@@ -30,21 +30,27 @@ export default async (req, res) => {
                     email: new_user.email,
                 }).toArray();
 
-                // try {
-                //     new_user.password = await bcrypt.hash(
-                //         new_user.password,
-                //         10
-                //     );
-                //     const new_db_user = await Users.insertOne(new_user);
-                //     if (new_db_user) {
-                //         console.log(new_db_user);
-                //         res.status(200).send("User Successfully Added");
-                //     }
-                // } catch (error) {}
+                if (user_exists[0]) {
+                    res.json({ status: 400, msg: "User already exists" });
+                } else {
+                    try {
+                        new_user.password = await bcrypt.hash(
+                            new_user.password,
+                            10
+                        );
+                        const new_db_user = await Users.insertOne(new_user);
+                        if (new_db_user) {
+                            console.log(new_db_user);
+                            res.json({status:200, msg: "User Successfully Added"});
+                        }
+                    } catch (error) {}
+                }
             } else {
-                res.status(400).send("Incorrect Admin Password");
+                res.json({
+                    status: 400,
+                    msg: "Incorrect Administrator Password",
+                });
             }
-            //const newUser = await Users.insert(req.body);
             break;
 
         case "delete":

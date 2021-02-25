@@ -11,6 +11,7 @@ export default function SignUp() {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [passwordError, setPasswordError] = useState();
+    const [pageMessage, setPageMessage] = useState();
     const [adminPassword, setAdminPassword] = useState("");
 
     const [loading, setLoading] = useState(false);
@@ -22,13 +23,22 @@ export default function SignUp() {
             } else if (confirmPassword === password) {
                 setPasswordError("");
             }
+        } else {
+            setPasswordError("");
         }
     }, [confirmPassword]);
 
     const signup = async (event) => {
         event.preventDefault();
+        setPageMessage("");
         setLoading(!loading);
-        if (!passwordError) {
+        if (
+            !passwordError &&
+            first_name &&
+            last_name &&
+            username &&
+            adminPassword
+        ) {
             //call to create user
             const user = {
                 first_name: first_name,
@@ -40,15 +50,48 @@ export default function SignUp() {
 
             try {
                 const url = `/api/user/create`;
-                const newUser = await axios.post(url, user);
+                const { data: newUser } = await axios.post(url, user);
                 console.log(newUser);
+                setLoading(false);
+                if (newUser.status) {
+                    if (newUser.status === 400) {
+                        //set error message
+                        setPageMessage({
+                            color: "red",
+                            message: newUser.msg,
+                        });
+                    } else if (newUser.status === 200) {
+                        //set success message
+                        setPageMessage({
+                            color: "green",
+                            message: newUser.msg,
+                        });
+                    }
+                }
             } catch (error) {
                 console.log(error);
+                //set error message
+                setLoading(false);
             }
         } else {
             //error
-            console.log("invalid admin password");
+            setPageMessage({
+                color: "red",
+                message: "Please finish filling out the form",
+            });
+            setLoading(false);
         }
+    };
+
+    const clearForm = () => {
+        setFirstName("");
+        setLastName("");
+        setUsername("");
+        setPassword("");
+        setConfirmPassword("");
+        setPasswordError("");
+        setPageMessage("");
+        setAdminPassword("");
     };
 
     return (
@@ -137,6 +180,16 @@ export default function SignUp() {
                         value={adminPassword}
                         required
                     />
+
+                    {pageMessage && (
+                        <>
+                            <Message color={pageMessage.color}>
+                                <Message.Header>
+                                    {pageMessage.message}
+                                </Message.Header>
+                            </Message>
+                        </>
+                    )}
 
                     <div className={styles.center}>
                         <Button
