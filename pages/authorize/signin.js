@@ -63,7 +63,6 @@ export default function SignIn() {
                                 signIn("credentials", {
                                     username: username,
                                     password: password,
-                                    callbackUrl:"https://hfb-inventory-tracker.herokuapp.com/",
                                 });
                             }}
                             primary
