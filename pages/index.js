@@ -1,7 +1,7 @@
 import Head from "next/head";
 import NavHeader from "../components/header.js";
 import { Icon, Table, Header, Input, Button } from "semantic-ui-react";
-import { signIn, signOut, useSession } from "next-auth/client";
+import { signIn, useSession } from "next-auth/client";
 import { useEffect } from "react";
 import styles from "../styles/Home.module.css";
 

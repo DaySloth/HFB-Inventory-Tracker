@@ -12,11 +12,23 @@ export default async (req, res) => {
     switch (handler) {
         case "login":
             const { username, password } = req.body;
-            const { documents: user } = await Users.find({});
-            if (user) {
-                console.log("found the user");
+            const user = await Users.find({ email: username }).toArray();
+            if (user[0]) {
+                const correctPass = await bcrypt.compare(
+                    password,
+                    user[0].password
+                );
+
+                if (correctPass) {
+                    res.status(200).send({
+                        name: user[0].first_name,
+                        email: user[0].email,
+                    });
+                } else {
+                    res.status(400).end();
+                }
             } else {
-                res.status(400).send("Can't find user");
+                res.status(400).end();
             }
             break;
 
@@ -41,7 +53,10 @@ export default async (req, res) => {
                         const new_db_user = await Users.insertOne(new_user);
                         if (new_db_user) {
                             console.log(new_db_user);
-                            res.json({status:200, msg: "User Successfully Added"});
+                            res.json({
+                                status: 200,
+                                msg: "User Successfully Added",
+                            });
                         }
                     } catch (error) {}
                 }

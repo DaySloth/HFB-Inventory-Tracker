@@ -71,9 +71,13 @@ export default function SignUp() {
                     }
                 }
             } catch (error) {
-                console.log(error);
                 //set error message
                 setLoading(false);
+                setPageMessage({
+                    color: "red",
+                    message:
+                        "A server error occured, please try again in a minute",
+                });
             }
         } else {
             //error
