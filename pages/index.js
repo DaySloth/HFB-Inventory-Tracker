@@ -8,21 +8,21 @@ import Loader from "../components/loader";
 export default function Home() {
   const [session, loading] = useSession();
 
-  // useEffect(() => {
-  //   if (loading) {
-  //     //wait
-  //   } else {
-  //     if (session) {
-  //       console.log(session);
-  //     } else {
-  //       window.location.href = "/authorize/signin";
-  //     }
-  //   }
-  // }, [loading]);
+  useEffect(() => {
+    if (loading) {
+      //wait
+    } else {
+      if (session) {
+        console.log(session);
+      } else {
+        window.location.href = "/authorize/signin";
+      }
+    }
+  }, [loading]);
 
   return (
     <>
-      {true && <Loader />}
+      {loading && <Loader />}
 
       {session && (
         <>
