@@ -4,15 +4,22 @@ import { Header, Icon, Grid, Input, Select, Button } from "semantic-ui-react";
 import { useSession } from "next-auth/client";
 import axios from "axios";
 import Loader from "../../components/loader";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import styles from "../../styles/Home.module.css";
 
 export default function AddaPart() {
-    const categoryOptions = [
-        { key: 1, value: "accessories", text: "Accessories" },
-    ];
+    const categoryOptions = [];
 
     const [session, loading] = useSession();
+    const [waitingForResponse, setWaitingForResponse] = useState(false);
+    const [pageError, setPageError] = useState("");
+    const [brand, setBrand] = useState("");
+    const [partNum, setPartNum] = useState("");
+    const [partName, setPartName] = useState("");
+    const [serial, setSerial] = useState("");
+    const [color, setColor] = useState("");
+    const [category, setCategory] = useState("");
+    const [quantity, setQuantity] = useState("");
 
     useEffect(() => {
         if (loading) {
@@ -27,7 +34,13 @@ export default function AddaPart() {
     }, [loading]);
 
     const createPart = async () => {
-      
+        const data = {};
+        try {
+            const addedPart = axios.post("/api/parts/create", data);
+            console.log(addedPart);
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     return (
@@ -55,35 +68,65 @@ export default function AddaPart() {
                             <Grid.Row>
                                 <Grid.Column>
                                     <label>Brand:</label>
-                                    <Input className={styles.fullWidth} />
+                                    <Input
+                                        className={styles.fullWidth}
+                                        onChange={(e) => {
+                                            setBrand(e.target.value);
+                                        }}
+                                    />
                                 </Grid.Column>
                                 <Grid.Column>
                                     <label>Part/Model #:</label>
-                                    <Input className={styles.fullWidth} />
+                                    <Input
+                                        className={styles.fullWidth}
+                                        onChange={(e) => {
+                                            setPartNum(e.target.value);
+                                        }}
+                                    />
                                 </Grid.Column>
                                 <Grid.Column>
                                     <label>Part Name:</label>
-                                    <Input className={styles.fullWidth} />
+                                    <Input
+                                        className={styles.fullWidth}
+                                        onChange={(e) => {
+                                            setPartName(e.target.value);
+                                        }}
+                                    />
                                 </Grid.Column>
                             </Grid.Row>
                             <Grid.Row>
                                 <Grid.Column>
                                     <label>Serial:</label>
-                                    <Input className={styles.fullWidth} />
+                                    <Input
+                                        className={styles.fullWidth}
+                                        onChange={(e) => {
+                                            setSerial(e.target.value);
+                                        }}
+                                    />
                                 </Grid.Column>
                                 <Grid.Column>
                                     <label>Color:</label>
-                                    <Input className={styles.fullWidth} />
+                                    <Input
+                                        className={styles.fullWidth}
+                                        onChange={(e) => {
+                                            setColor(e.target.value);
+                                        }}
+                                    />
                                 </Grid.Column>
                             </Grid.Row>
                             <Grid.Row>
                                 <Grid.Column>
-                                    <label>Category:</label>
-                                    <br />
-                                    <Select
-                                        options={categoryOptions}
-                                        className={styles.fullWidth}
-                                    />
+                                    <div>
+                                        <label>Category:</label>
+                                        <br />
+                                        <Select
+                                            options={categoryOptions}
+                                            className={styles.fullWidth}
+                                            onChange={(e) => {
+                                                setCategory(e.target.value);
+                                            }}
+                                        />
+                                    </div>
                                 </Grid.Column>
                                 <Grid.Column>
                                     <div>
@@ -91,13 +134,25 @@ export default function AddaPart() {
                                         <Input
                                             type="number"
                                             className={styles.fullWidth}
+                                            onChange={(e) => {
+                                                setQuantity(e.target.value);
+                                            }}
                                         />
                                     </div>
                                 </Grid.Column>
                             </Grid.Row>
                         </Grid>
                         <div className={styles.centerButton}>
-                            <Button inverted color="green">
+                            <Button
+                                inverted
+                                color="green"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    setWaitingForResponse(true);
+                                    createPart();
+                                }}
+                                loading={waitingForResponse}
+                            >
                                 Add Part to Warehouse
                             </Button>
                         </div>
