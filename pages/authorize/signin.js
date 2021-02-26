@@ -19,7 +19,16 @@ export default function SignIn() {
                 <title>HFB Inventory | Signin</title>
             </Head>
 
-            <div className={styles.container}>
+            <div className={styles.loading}>
+                <img
+                    src="/HomeForeverBaths-Logo--blue.png"
+                    alt="home forever baths logo"
+                    className={styles.loadingImage}
+                />
+                <h1>Loading...</h1>
+            </div>
+
+            {/* <div className={styles.container}>
                 <div className={styles.center}>
                     <img
                         src="/HomeForeverBaths-Black-Horz.png"
@@ -63,7 +72,7 @@ export default function SignIn() {
                                 signIn("credentials", {
                                     username: username,
                                     password: password,
-                                    callbackUrl:"https://hfb-inventory-tracker.herokuapp.com/",
+                                    //callbackUrl:"https://hfb-inventory-tracker.herokuapp.com/",
                                 });
                             }}
                             primary
@@ -72,7 +81,7 @@ export default function SignIn() {
                         />
                     </div>
                 </Form>
-            </div>
+            </div> */}
         </>
     );
 }

@@ -15,14 +15,20 @@ export default function Home() {
             if (session) {
                 console.log(session);
             } else {
-                window.location.href = "/authorize/signin"
+                window.location.href = "/authorize/signin";
             }
         }
     }, [loading]);
 
     return (
         <>
-            {loading && <h2>loading</h2>}
+            {loading && (
+                <img
+                    src="/HomeForeverBaths-Logo--blue.png"
+                    alt="home forever baths logo"
+                    className={styles.loading}
+                />
+            )}
 
             {session && (
                 <>
