@@ -11,7 +11,31 @@ export default async (req, res) => {
     switch (handler) {
         case "create": {
             //create part
-            console.log("create_:", req.body);
+            try {
+                const addedPart = await Parts.insert(req.body);
+                if (addedPart) {
+                    res.json({
+                        status: 200,
+                        msg: "Successfully added part to warehouse",
+                    });
+                } else {
+                    res.json({
+                        status: 400,
+                        msg: "Error adding part",
+                    });
+                }
+            } catch (error) {
+                res.json({
+                    status: 400,
+                    msg: "Error adding part",
+                });
+            }
+        }
+        case "add": {
+            //add part
+        }
+        case "subtract": {
+            //subtract part
         }
         case "delete": {
             //delete part

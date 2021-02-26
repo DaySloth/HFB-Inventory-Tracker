@@ -7,57 +7,53 @@ import { useEffect } from "react";
 import styles from "../../styles/Home.module.css";
 
 export default function EditaPart() {
-  const categoryOptions = [
-    { key: 1, value: "accessories", text: "Accessories" },
-  ];
+    const categoryOptions = [
+        { key: 1, value: "accessories", text: "Accessories" },
+    ];
 
-  const [session, loading] = useSession();
+    const [session, loading] = useSession();
 
-  useEffect(() => {
-    if (loading) {
-      //wait
-    } else {
-      if (session) {
-        console.log(session);
-      } else {
-        window.location.href = "/authorize/signin";
-      }
-    }
-  }, [loading]);
+    useEffect(() => {
+        if (!loading) {
+            if (!session) {
+                window.location.href = "/authorize/signin";
+            }
+        }
+    }, [loading]);
 
-  return (
-    <>
-      {loading && <Loader />}
-
-      {session && (
+    return (
         <>
-          <Head>
-            <title>HFB Inventory | Edit a Part</title>
-          </Head>
+            {loading && <Loader />}
 
-          <NavHeader />
+            {session && (
+                <>
+                    <Head>
+                        <title>HFB Inventory | Edit a Part</title>
+                    </Head>
 
-          <div className={styles.center}>
-            <Header as="h2" icon>
-              <Icon name="edit outline" />
-              Edit a Part
-            </Header>
-          </div>
-          <hr />
-          <div className={styles.container}>
-            <label>Search for part:</label>
-            <br />
-            <Input
-              icon="search"
-              placeholder="Search..."
-              className={styles.halfWidth}
-            />
-            <Button inverted color="blue">
-              Search
-            </Button>
-          </div>
+                    <NavHeader />
 
-          {/* <div className={styles.container}>
+                    <div className={styles.center}>
+                        <Header as="h2" icon>
+                            <Icon name="edit outline" />
+                            Edit a Part
+                        </Header>
+                    </div>
+                    <hr />
+                    <div className={styles.container}>
+                        <label>Search for part:</label>
+                        <br />
+                        <Input
+                            icon="search"
+                            placeholder="Search..."
+                            className={styles.halfWidth}
+                        />
+                        <Button inverted color="blue">
+                            Search
+                        </Button>
+                    </div>
+
+                    {/* <div className={styles.container}>
                         <Grid columns="equal">
                             <Grid.Row>
                                 <Grid.Column>
@@ -109,8 +105,8 @@ export default function EditaPart() {
                             </Button>
                         </div>
                     </div> */}
+                </>
+            )}
         </>
-      )}
-    </>
-  );
+    );
 }
