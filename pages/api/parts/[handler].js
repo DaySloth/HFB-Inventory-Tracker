@@ -11,6 +11,7 @@ export default async (req, res) => {
     switch (handler) {
         case "create": {
             //create part
+            console.log("create_:", req.body);
         }
         case "delete": {
             //delete part
