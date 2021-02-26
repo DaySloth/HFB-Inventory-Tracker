@@ -6,8 +6,8 @@ import { signIn } from "next-auth/client";
 import { useRouter } from "next/router";
 
 export default function SignIn() {
-    const [username, setUsername] = useState();
-    const [password, setPassword] = useState();
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
 
     const router = useRouter();
@@ -36,6 +36,7 @@ export default function SignIn() {
                         type="email"
                         placeholder="Username"
                         onChange={(event) => setUsername(event.target.value)}
+                        value={username}
                     />
                     <Form.Input
                         icon="lock"
@@ -43,6 +44,7 @@ export default function SignIn() {
                         label="Password"
                         type="password"
                         onChange={(event) => setPassword(event.target.value)}
+                        value={password}
                     />
 
                     {error && (
@@ -63,6 +65,7 @@ export default function SignIn() {
                                 signIn("credentials", {
                                     username: username,
                                     password: password,
+                                    callbackUrl: "http://localhost:3000",
                                 });
                             }}
                             primary
