@@ -48,6 +48,11 @@
     margin: 0 auto;
 }
 
+.centerLogo {
+    width: 20rem;
+    margin: 0 auto;
+}
+
 .centerText {
     text-align: center;
 }

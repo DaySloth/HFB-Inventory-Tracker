@@ -20,11 +20,11 @@ export default function SignIn() {
             </Head>
 
             <div className={styles.container}>
-                <div className={styles.center}>
+                <div className={styles.centerLogo}>
                     <img
                         src="/HomeForeverBaths-Black-Horz.png"
                         alt="Home Forever Baths logo"
-                        className={styles.center}
+                        className={styles.centerLogo}
                     />
                 </div>
 
@@ -72,6 +72,9 @@ export default function SignIn() {
                             className={styles.center}
                             loading={loading}
                         />
+                        <div className={styles.centerText} style={{ "marginTop": "10px" }}>
+                            <a href="/authorize/signup">Signup</a> | <a href="#">Forgot Password?</a>
+                        </div>
                     </div>
                 </Form>
             </div>

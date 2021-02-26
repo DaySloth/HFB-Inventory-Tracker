@@ -107,11 +107,11 @@ export default function SignUp() {
             </Head>
 
             <div className={styles.container}>
-                <div className={styles.center}>
+                <div className={styles.centerLogo}>
                     <img
                         src="/HomeForeverBaths-Black-Horz.png"
                         alt="Home Forever Baths logo"
-                        className={styles.center}
+                        className={styles.centerLogo}
                     />
                 </div>
 
