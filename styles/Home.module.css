@@ -24,7 +24,7 @@
 
 .loadingImage {
     max-width: 200px;
-    animation: rotation 1s infinite linear;
+    animation: rotation 1.6s infinite linear;
 }
 
 .fullWidth {

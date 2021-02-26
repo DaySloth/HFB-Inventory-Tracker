@@ -9,7 +9,6 @@ export default function SignIn() {
     const [username, setUsername] = useState();
     const [password, setPassword] = useState();
     const [loading, setLoading] = useState(false);
-    const [dots, setDots] = useState("");
 
     const router = useRouter();
     const { error } = router.query;
