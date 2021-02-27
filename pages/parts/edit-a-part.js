@@ -126,7 +126,7 @@ export default function EditaPart() {
                           <Table.Cell>{part.category}</Table.Cell>
                           <Table.Cell>{part.quantity}</Table.Cell>
                           <Table.Cell>
-                            <div className={styles.centerText}>
+                            {/* <div className={styles.centerText}>
                               <Icon
                                 name="plus"
                                 className={styles.iconHover}
@@ -164,7 +164,7 @@ export default function EditaPart() {
                                   });
                                 }}
                               />
-                            </div>
+                            </div> */}
                           </Table.Cell>
                         </Table.Row>
                       </>
