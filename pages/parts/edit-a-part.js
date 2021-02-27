@@ -74,27 +74,29 @@ export default function EditaPart() {
           </div>
           <hr />
           <div className={styles.container}>
-            <label>Search for part:</label>
-            <br />
-            <Input
-              icon="search"
-              placeholder="Search..."
-              className={styles.halfWidth}
-              value={query}
-              onChange={(e) => {
-                setQuery(e.target.value);
-              }}
-            />
-            <Button
-              inverted
-              color="blue"
-              loading={waiting}
-              onClick={(e) => {
-                searchParts(e);
-              }}
-            >
-              Search
-            </Button>
+            <form>
+              <label>Search for part:</label>
+              <br />
+              <Input
+                icon="search"
+                placeholder="Search..."
+                className={styles.halfWidth}
+                value={query}
+                onChange={(e) => {
+                  setQuery(e.target.value);
+                }}
+              />
+              <Button
+                inverted
+                color="blue"
+                loading={waiting}
+                onClick={(e) => {
+                  searchParts(e);
+                }}
+              >
+                Search
+              </Button>
+            </form>
           </div>
 
           {parts[0] ? (
