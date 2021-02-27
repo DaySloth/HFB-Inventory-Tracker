@@ -17,10 +17,6 @@ import axios from "axios";
 import styles from "../../styles/Home.module.css";
 
 export default function EditaPart() {
-  const categoryOptions = [
-    { key: 1, value: "accessories", text: "Accessories" },
-  ];
-
   const [waiting, setWaiting] = useState(false);
   const [query, setQuery] = useState("");
   const [error, setError] = useState("");
@@ -128,45 +124,15 @@ export default function EditaPart() {
                           <Table.Cell>{part.category}</Table.Cell>
                           <Table.Cell>{part.quantity}</Table.Cell>
                           <Table.Cell>
-                            {/* <div className={styles.centerText}>
-                              <Icon
-                                name="plus"
+                            <div className={styles.centerText}>
+                              {/* <Icon
+                                name="pencil alternate"
                                 className={styles.iconHover}
-                                color="green"
                                 onClick={() => {
-                                  setModalActions({
-                                    ...modalActions,
-                                    action: "add",
-                                    message: "How many would you like to add?",
-                                    id: part._id,
-                                    part: part.part_num,
-                                  });
-                                  dispatch({
-                                    type: "open",
-                                    size: "mini",
-                                  });
+                                  window.location.href = `/parts/edit/${part._id}`;
                                 }}
-                              />
-                              <Icon
-                                name="minus"
-                                className={styles.iconHover}
-                                color="red"
-                                onClick={() => {
-                                  setModalActions({
-                                    ...modalActions,
-                                    action: "subtract",
-                                    message:
-                                      "How many would you like to subtract?",
-                                    id: part._id,
-                                    part: part.part_num,
-                                  });
-                                  dispatch({
-                                    type: "open",
-                                    size: "mini",
-                                  });
-                                }}
-                              />
-                            </div> */}
+                              /> */}
+                            </div>
                           </Table.Cell>
                         </Table.Row>
                       </>
@@ -189,53 +155,4 @@ export default function EditaPart() {
       )}
     </>
   );
-}
-
-{
-  /* <div className={styles.container}>
-  <Grid columns="equal">
-    <Grid.Row>
-      <Grid.Column>
-        <label>Brand:</label>
-        <Input className={styles.fullWidth} />
-      </Grid.Column>
-      <Grid.Column>
-        <label>Part/Model #:</label>
-        <Input className={styles.fullWidth} />
-      </Grid.Column>
-      <Grid.Column>
-        <label>Part Name:</label>
-        <Input className={styles.fullWidth} />
-      </Grid.Column>
-    </Grid.Row>
-    <Grid.Row>
-      <Grid.Column>
-        <label>Serial:</label>
-        <Input className={styles.fullWidth} />
-      </Grid.Column>
-      <Grid.Column>
-        <label>Color:</label>
-        <Input className={styles.fullWidth} />
-      </Grid.Column>
-    </Grid.Row>
-    <Grid.Row>
-      <Grid.Column>
-        <label>Category:</label>
-        <br />
-        <Select options={categoryOptions} className={styles.fullWidth} />
-      </Grid.Column>
-      <Grid.Column>
-        <div>
-          <label>Quantity:</label>
-          <Input type="number" className={styles.fullWidth} />
-        </div>
-      </Grid.Column>
-    </Grid.Row>
-  </Grid>
-  <div className={styles.centerButton}>
-    <Button inverted color="blue">
-      Save Edit
-    </Button>
-  </div>
-</div>; */
 }
