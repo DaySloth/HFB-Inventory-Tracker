@@ -113,6 +113,33 @@ export default async (req, res) => {
       console.log("delete");
       break;
     }
+    case "search": {
+      try {
+        const foundParts = await Parts.find({
+          $text: { $search: `${handler[1]}` },
+        }).toArray();
+
+        if (foundParts[0]) {
+          res.json({
+            status: 200,
+            msg: "found parts",
+            parts: foundParts,
+          });
+        } else {
+          res.json({
+            status: 400,
+            msg: "Error Finding Parts",
+          });
+        }
+      } catch (error) {
+        res.json({
+          status: 400,
+          msg: "Error Finding Parts",
+        });
+      }
+
+      break;
+    }
     default: {
       //do default option
       res.send(500);
