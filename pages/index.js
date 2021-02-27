@@ -9,6 +9,7 @@ import {
   Button,
   Modal,
   Message,
+  Segment,
 } from "semantic-ui-react";
 import { useSession } from "next-auth/client";
 import { connectToDatabase } from "../util/mongodb";
@@ -159,7 +160,10 @@ export default function Home({ parts }) {
                   <Table.Body>
                     {parts.map((part) => (
                       <>
-                        <Table.Row key={1}>
+                        <Table.Row
+                          key={part._id}
+                          error={parseInt(part.quantity) === 0 ? true : false}
+                        >
                           <Table.Cell>{part.brand}</Table.Cell>
                           <Table.Cell>{part.part_name}</Table.Cell>
                           <Table.Cell>{part.part_num}</Table.Cell>
@@ -214,7 +218,15 @@ export default function Home({ parts }) {
               </div>
             </>
           ) : (
-            <h2>no parts</h2>
+            <Segment placeholder>
+              <Header icon>
+                <Icon name="bath" />
+                No parts are currently in the warehouse
+              </Header>
+              <Button primary href="/parts/add-a-part">
+                Add Parts
+              </Button>
+            </Segment>
           )}
         </>
       )}
@@ -246,7 +258,7 @@ export default function Home({ parts }) {
             }
           />
           {error && (
-            <Message>
+            <Message color="red">
               <Message.Header>{error}</Message.Header>
             </Message>
           )}
