@@ -125,13 +125,13 @@ export default function EditaPart() {
                           <Table.Cell>{part.quantity}</Table.Cell>
                           <Table.Cell>
                             <div className={styles.centerText}>
-                              {/* <Icon
+                              <Icon
                                 name="pencil alternate"
                                 className={styles.iconHover}
                                 onClick={() => {
                                   window.location.href = `/parts/edit/${part._id}`;
                                 }}
-                              /> */}
+                              />
                             </div>
                           </Table.Cell>
                         </Table.Row>

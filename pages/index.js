@@ -135,13 +135,13 @@ export default function Home({ parts }) {
           <hr />
           {parts[0] ? (
             <>
-              <div className={styles.container}>
+              {/* <div className={styles.container}>
                 <Input
                   icon="search"
                   placeholder="Search..."
                   className={styles.fullWidth}
                 />
-              </div>
+              </div> */}
 
               <div className={styles.tableContainer}>
                 <Table celled>

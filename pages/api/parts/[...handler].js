@@ -13,6 +13,7 @@ export default async (req, res) => {
     case "create": {
       //create part
       try {
+        req.body.date_updated = Date.now();
         const addedPart = await Parts.insertOne(req.body);
         if (addedPart) {
           res.json({
@@ -37,15 +38,14 @@ export default async (req, res) => {
       try {
         //add part
         const { quantity } = await Parts.findOne({ _id: ObjectId(handler[1]) });
-        console.log(quantity);
         const newQuantity = parseInt(quantity) + parseInt(req.body.amount);
-        console.log(newQuantity);
+
         Parts.findOneAndUpdate(
           {
             _id: ObjectId(handler[1]),
           },
           {
-            $set: { quantity: newQuantity },
+            $set: { quantity: newQuantity, date_updated: Date.now() },
           },
           (err, result) => {
             if (result) {
@@ -88,13 +88,18 @@ export default async (req, res) => {
               _id: ObjectId(handler[1]),
             },
             {
-              $set: { quantity: newQuantity },
+              $set: { quantity: newQuantity, date_updated: Date.now() },
             },
             (err, result) => {
               if (result) {
                 res.json({
                   status: 200,
                   msg: "Successfull add",
+                });
+              } else {
+                res.json({
+                  status: 400,
+                  msg: "Error adding part",
                 });
               }
             }
@@ -138,6 +143,32 @@ export default async (req, res) => {
         });
       }
 
+      break;
+    }
+    case "update": {
+      req.body.date_updated = Date.now();
+      try {
+        const updatedPart = await Parts.findOneAndUpdate(
+          { _id: ObjectId(handler[1]) },
+          { $set: req.body }
+        );
+        if (updatedPart.ok === 1) {
+          res.json({
+            status: 200,
+            msg: "Successfully updated part",
+          });
+        } else {
+          res.json({
+            status: 400,
+            msg: "Error updating part",
+          });
+        }
+      } catch (error) {
+        res.json({
+          status: 400,
+          msg: "Error updating part",
+        });
+      }
       break;
     }
     default: {
