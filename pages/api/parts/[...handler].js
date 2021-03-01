@@ -13,6 +13,7 @@ export default async (req, res) => {
     case "create": {
       //create part
       try {
+        req.body.date_updated = Date.now();
         const addedPart = await Parts.insertOne(req.body);
         if (addedPart) {
           res.json({
@@ -45,7 +46,7 @@ export default async (req, res) => {
             _id: ObjectId(handler[1]),
           },
           {
-            $set: { quantity: newQuantity },
+            $set: { quantity: newQuantity, date_updated: Date.now() },
           },
           (err, result) => {
             if (result) {
@@ -88,7 +89,7 @@ export default async (req, res) => {
               _id: ObjectId(handler[1]),
             },
             {
-              $set: { quantity: newQuantity },
+              $set: { quantity: newQuantity, date_updated: Date.now() },
             },
             (err, result) => {
               if (result) {

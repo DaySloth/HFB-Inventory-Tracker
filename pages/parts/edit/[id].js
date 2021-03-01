@@ -22,6 +22,14 @@ export default function EditPartById({ part, categories }) {
   const [newCategory, setNewCategory] = useState("");
   const [quantity, setQuantity] = useState(part.quantity);
 
+  const updatePart = async () => {
+    if (brand && partNum && partName && category && quantity) {
+      const data = {};
+    } else {
+      setError("Please finish filling out the form");
+    }
+  };
+
   return (
     <>
       {loading && <Loader />}
