@@ -1,14 +1,25 @@
 import { ObjectId } from "mongodb";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import NavHeader from "../../../components/header.js";
 import Loader from "../../../components/loader.js";
 import { useSession } from "next-auth/client";
 import { connectToDatabase } from "../../../util/mongodb";
-import { Icon, Grid, Input, Select, Button, Header } from "semantic-ui-react";
+import {
+  Icon,
+  Grid,
+  Input,
+  Select,
+  Button,
+  Header,
+  Message,
+} from "semantic-ui-react";
 import { useState } from "react";
 import styles from "../../../styles/Home.module.css";
+import axios from "axios";
 
 export default function EditPartById({ part, categories }) {
+  const router = useRouter();
   const [session, loading] = useSession();
   const [waitingForResponse, setWaitingForResponse] = useState(false);
   const [error, setError] = useState("");
@@ -16,16 +27,56 @@ export default function EditPartById({ part, categories }) {
   const [brand, setBrand] = useState(part.brand);
   const [partNum, setPartNum] = useState(part.part_num);
   const [partName, setPartName] = useState(part.part_name);
-  const [serial, setSerial] = useState(part.serial);
   const [color, setColor] = useState(part.color);
   const [category, setCategory] = useState(part.category);
   const [newCategory, setNewCategory] = useState("");
   const [quantity, setQuantity] = useState(part.quantity);
+  const [serial, setSerial] = useState(part.serial);
 
   const updatePart = async () => {
-    if (brand && partNum && partName && category && quantity) {
-      const data = {};
+    setError("");
+    setSuccess("");
+    if (brand && partNum && partName && color && quantity) {
+      const data = {
+        brand: brand,
+        part_num: partNum,
+        part_name: partName,
+        color: color,
+        quantity: parseInt(quantity),
+      };
+
+      if (newCategory) {
+        data.category = newCategory;
+      } else {
+        data.category = category;
+      }
+
+      if (serial) {
+        data.serial = serial;
+      } else {
+        data.serial = null;
+      }
+
+      try {
+        let updatedPart = await axios.post(
+          `/api/parts/update/${part._id}`,
+          data
+        );
+
+        if (updatedPart.data.status === 200) {
+          setWaitingForResponse(false);
+          setSuccess(updatedPart.data.msg);
+          router.push("/parts/edit-a-part");
+        } else {
+          setWaitingForResponse(false);
+          setError(updatedPart.data.msg);
+        }
+      } catch (error) {
+        setWaitingForResponse(false);
+        setError("An error occured with updating the part, please try againƒ");
+      }
     } else {
+      setWaitingForResponse(false);
       setError("Please finish filling out the form");
     }
   };
@@ -36,7 +87,7 @@ export default function EditPartById({ part, categories }) {
       {session && (
         <>
           <Head>
-            <title>HFB Inventory | Add a Part</title>
+            <title>HFB Inventory | Edit Part</title>
           </Head>
 
           <NavHeader />
@@ -152,29 +203,25 @@ export default function EditPartById({ part, categories }) {
             {error && (
               <>
                 <Message color="red">
-                  <Message.Header>
-                    Please finish filling out the form
-                  </Message.Header>
+                  <Message.Header>{error}</Message.Header>
                 </Message>
               </>
             )}
             {success && (
               <>
                 <Message color="green">
-                  <Message.Header>
-                    Successfully added part to warehouse
-                  </Message.Header>
+                  <Message.Header>Successfully updated part</Message.Header>
                 </Message>
               </>
             )}
             <div className={styles.centerButton}>
               <Button
                 inverted
-                color="inverted blue"
+                color="blue"
                 onClick={(e) => {
                   e.preventDefault();
                   setWaitingForResponse(true);
-                  createPart();
+                  updatePart();
                 }}
                 loading={waitingForResponse}
               >
