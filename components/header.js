@@ -1,22 +1,23 @@
 import { Dropdown, Menu, Grid } from "semantic-ui-react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import styles from "../styles/Home.module.css";
 import { signOut, useSession } from "next-auth/client";
 
 export default function Header() {
     const [session, loading] = useSession();
-
+    const router = useRouter();
     const options = [
-        { key: 1, text: <Link href="/">View Warehouse</Link>, value: 1 },
+        { key: 1, text: "View Warehouse", value: "/" },
         {
             key: 2,
-            text: <Link href="/parts/add-a-part">Add a Part</Link>,
-            value: 2,
+            text: "Add a part",
+            value: "/parts/add-a-part",
         },
         {
             key: 3,
-            text: <Link href="/parts/edit-a-part">Edit a Part</Link>,
-            value: 3,
+            text: "Edit a part",
+            value: "/parts/edit-a-part",
         },
     ];
 
@@ -41,9 +42,12 @@ export default function Header() {
                             <Menu compact>
                                 <Dropdown
                                     text="Menu"
-                                    options={options}
                                     simple
                                     item
+                                    options={options}
+                                    onChange={(e, { value }) => {
+                                        router.push(value);
+                                    }}
                                 />
                             </Menu>
                         </div>
