@@ -10,6 +10,8 @@ import {
   Modal,
   Message,
   Segment,
+  Label,
+  List,
 } from "semantic-ui-react";
 import { useSession } from "next-auth/client";
 import { connectToDatabase } from "../util/mongodb";
@@ -113,8 +115,15 @@ export default function Home({ parts }) {
     }
   };
 
+  const css = `
+    .hidden {
+      display: none;
+    }
+  `;
+
   return (
     <>
+      <style>{css}</style>
       {loading && <Loader />}
 
       {session && (
@@ -164,7 +173,27 @@ export default function Home({ parts }) {
                           key={part._id}
                           error={parseInt(part.quantity) === 0 ? true : false}
                         >
-                          <Table.Cell>{part.brand}</Table.Cell>
+                          <Table.Cell>
+                            {part.serial[0] && (
+                              <Icon
+                                name="caret down"
+                                className={styles.iconHover}
+                                onClick={(e) => {
+                                  document
+                                    .getElementById(part.part_num)
+                                    .classList.toggle("hidden");
+                                  if (e.target.classList.contains("down")) {
+                                    e.target.classList.add("up");
+                                    e.target.classList.remove("down");
+                                  } else {
+                                    e.target.classList.add("down");
+                                    e.target.classList.remove("up");
+                                  }
+                                }}
+                              />
+                            )}
+                            {part.brand}
+                          </Table.Cell>
                           <Table.Cell>{part.part_name}</Table.Cell>
                           <Table.Cell>{part.part_num}</Table.Cell>
                           <Table.Cell>{part.category}</Table.Cell>
@@ -211,6 +240,23 @@ export default function Home({ parts }) {
                             </div>
                           </Table.Cell>
                         </Table.Row>
+
+                        {part.serial[0] && (
+                          <>
+                            <Table.Row id={part.part_num} className="hidden">
+                              <Table.Cell>
+                                <Label ribbon>Serials</Label>
+                              </Table.Cell>
+                              <Table.Cell>
+                                <List>
+                                  {part.serial.map((serial) => (
+                                    <List.Item key={serial}>{serial}</List.Item>
+                                  ))}
+                                </List>
+                              </Table.Cell>
+                            </Table.Row>
+                          </>
+                        )}
                       </>
                     ))}
                   </Table.Body>

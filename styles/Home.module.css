@@ -1,104 +1,112 @@
 .container {
-    width: 40%;
-    margin: 50px auto;
+  width: 40%;
+  margin: 50px auto;
 }
 
 .tableContainer {
-    width: 80%;
-    margin: 50px auto;
+  width: 80%;
+  margin: 50px auto;
 }
 
 .headerLogo {
-    width: 170px;
-    background-color: black;
-    padding: 10px;
-    border-bottom-left-radius: 50%;
-    border-bottom-right-radius: 50%;
-    cursor: pointer;
+  width: 170px;
+  background-color: black;
+  padding: 10px;
+  border-bottom-left-radius: 50%;
+  border-bottom-right-radius: 50%;
+  cursor: pointer;
 }
 
 .loading {
-    margin-top: 100px;
-    text-align: center;
+  margin-top: 100px;
+  text-align: center;
 }
 
 .loadingImage {
-    max-width: 200px;
-    animation: rotation 1.6s infinite linear;
+  max-width: 200px;
+  animation: rotation 1.6s infinite linear;
 }
 
 .fullWidth {
-    width: 100%;
+  width: 100%;
 }
 
 .halfWidth {
-    width: 80%;
+  width: 80%;
 }
 
 .mainNav {
-    height: 100px;
-    padding: 10px;
-    background-color: black;
-    color: white;
-    margin-bottom: 50px;
+  height: 100px;
+  padding: 10px;
+  background-color: black;
+  color: white;
+  margin-bottom: 50px;
 }
 
 .center {
-    width: 10rem;
-    margin: 0 auto;
+  width: 10rem;
+  margin: 0 auto;
 }
 
 .centerLogo {
-    width: 20rem;
-    margin: 0 auto;
+  width: 20rem;
+  margin: 0 auto;
 }
 
 .centerText {
-    text-align: center;
+  text-align: center;
 }
 
 .floatLeft {
-    float: left;
+  float: left;
 }
 
 .floatRight {
-    float: right;
+  float: right;
 }
 
 .centerButton {
-    text-align: center;
-    margin-top: 20px;
+  text-align: center;
+  margin-top: 20px;
 }
 
 .iconHover {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .logout {
-    color: red;
-    cursor: pointer;
+  color: red;
+  cursor: pointer;
+}
+
+.overflow {
+  overflow: hidden;
 }
 
 .redText {
-    color: red;
+  color: red;
 }
 
 .redGlowingBorder input {
-    border: 1.9px solid red !important;
-    border-radius: 7px !important;
-    outline: none !important;
-    box-shadow: 0 0 8px #ed9e9e !important;
+  border: 1.9px solid red !important;
+  border-radius: 7px !important;
+  outline: none !important;
+  box-shadow: 0 0 8px #ed9e9e !important;
 }
 
 .topBottomSpacing {
-    margin: 5px 0 12px;
+  margin: 5px 0 12px;
+}
+
+.hidden {
+  display: none;
 }
 
 @keyframes rotation {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
