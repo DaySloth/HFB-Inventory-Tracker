@@ -173,70 +173,72 @@ export default function Home({ parts }) {
                           key={part._id}
                           error={parseInt(part.quantity) === 0 ? true : false}
                         >
-                          <Table.Cell>
-                            {part.serial[0] && (
-                              <Icon
-                                name="caret down"
-                                className={styles.iconHover}
-                                onClick={(e) => {
-                                  document
-                                    .getElementById(part.part_num)
-                                    .classList.toggle("hidden");
-                                  if (e.target.classList.contains("down")) {
-                                    e.target.classList.add("up");
-                                    e.target.classList.remove("down");
-                                  } else {
-                                    e.target.classList.add("down");
-                                    e.target.classList.remove("up");
-                                  }
-                                }}
-                              />
-                            )}
-                            {part.brand}
-                          </Table.Cell>
+                          <Table.Cell>{part.brand}</Table.Cell>
                           <Table.Cell>{part.part_name}</Table.Cell>
                           <Table.Cell>{part.part_num}</Table.Cell>
                           <Table.Cell>{part.category}</Table.Cell>
                           <Table.Cell>{part.quantity}</Table.Cell>
                           <Table.Cell>
                             <div className={styles.centerText}>
-                              <Icon
-                                name="plus"
-                                className={styles.iconHover}
-                                color="green"
-                                onClick={() => {
-                                  setModalActions({
-                                    ...modalActions,
-                                    action: "add",
-                                    message: "How many would you like to add?",
-                                    id: part._id,
-                                    part: part.part_num,
-                                  });
-                                  dispatch({
-                                    type: "open",
-                                    size: "mini",
-                                  });
-                                }}
-                              />
-                              <Icon
-                                name="minus"
-                                className={styles.iconHover}
-                                color="red"
-                                onClick={() => {
-                                  setModalActions({
-                                    ...modalActions,
-                                    action: "subtract",
-                                    message:
-                                      "How many would you like to subtract?",
-                                    id: part._id,
-                                    part: part.part_num,
-                                  });
-                                  dispatch({
-                                    type: "open",
-                                    size: "mini",
-                                  });
-                                }}
-                              />
+                              {part.serial[0] ? (
+                                <Icon
+                                  name="caret down"
+                                  className={styles.iconHover}
+                                  onClick={(e) => {
+                                    document
+                                      .getElementById(part.part_num)
+                                      .classList.toggle("hidden");
+                                    if (e.target.classList.contains("down")) {
+                                      e.target.classList.add("up");
+                                      e.target.classList.remove("down");
+                                    } else {
+                                      e.target.classList.add("down");
+                                      e.target.classList.remove("up");
+                                    }
+                                  }}
+                                />
+                              ) : (
+                                <>
+                                  <Icon
+                                    name="plus"
+                                    className={styles.iconHover}
+                                    color="green"
+                                    onClick={() => {
+                                      setModalActions({
+                                        ...modalActions,
+                                        action: "add",
+                                        message:
+                                          "How many would you like to add?",
+                                        id: part._id,
+                                        part: part.part_num,
+                                      });
+                                      dispatch({
+                                        type: "open",
+                                        size: "mini",
+                                      });
+                                    }}
+                                  />
+                                  <Icon
+                                    name="minus"
+                                    className={styles.iconHover}
+                                    color="red"
+                                    onClick={() => {
+                                      setModalActions({
+                                        ...modalActions,
+                                        action: "subtract",
+                                        message:
+                                          "How many would you like to subtract?",
+                                        id: part._id,
+                                        part: part.part_num,
+                                      });
+                                      dispatch({
+                                        type: "open",
+                                        size: "mini",
+                                      });
+                                    }}
+                                  />
+                                </>
+                              )}
                             </div>
                           </Table.Cell>
                         </Table.Row>
@@ -250,7 +252,13 @@ export default function Home({ parts }) {
                               <Table.Cell>
                                 <List>
                                   {part.serial.map((serial) => (
-                                    <List.Item key={serial}>{serial}</List.Item>
+                                    <List.Item key={serial}>
+                                      {serial}{" "}
+                                      <Icon
+                                        name="trash alternate"
+                                        color="red"
+                                      />
+                                    </List.Item>
                                   ))}
                                 </List>
                               </Table.Cell>
