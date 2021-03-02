@@ -14,17 +14,49 @@ export default async (req, res) => {
       //create part
       try {
         req.body.date_updated = Date.now();
-        const addedPart = await Parts.insertOne(req.body);
-        if (addedPart) {
-          res.json({
-            status: 200,
-            msg: "Successfully added part to warehouse",
-          });
+        if (req.body.serial) {
+          req.body.serial = [req.body.serial];
         } else {
-          res.json({
-            status: 400,
-            msg: "Error adding part",
-          });
+          req.body.serial = [];
+        }
+
+        const foundPart = await Parts.findOne({
+          part_num: req.body.part_num,
+        });
+
+        if (foundPart) {
+          foundPart.serial.push(req.body.serial[0]);
+          foundPart.quantity =
+            parseInt(foundPart.quantity) + parseInt(req.body.quantity);
+
+          const updatedPart = await Parts.findOneAndUpdate(
+            { _id: ObjectId(foundPart._id) },
+            { $set: { quantity: foundPart.quantity, serial: foundPart.serial } }
+          );
+          if (updatedPart.ok === 1) {
+            res.json({
+              status: 200,
+              msg: "Successfully updated part",
+            });
+          } else {
+            res.json({
+              status: 400,
+              msg: "Error updating part",
+            });
+          }
+        } else {
+          const addedPart = await Parts.insertOne(req.body);
+          if (addedPart) {
+            res.json({
+              status: 200,
+              msg: "Successfully added part to warehouse",
+            });
+          } else {
+            res.json({
+              status: 400,
+              msg: "Error adding part",
+            });
+          }
         }
       } catch (error) {
         res.json({
@@ -169,6 +201,36 @@ export default async (req, res) => {
           msg: "Error updating part",
         });
       }
+      break;
+    }
+
+    case "serial": {
+      if (handler[1] === "delete") {
+        const id = handler[2];
+        const foundPart = await Parts.findOne({ _id: ObjectId(id) });
+        if (foundPart) {
+          foundPart.serial.splice(foundPart.serial.indexOf(req.body.serial), 1);
+          foundPart.quantity = parseInt(foundPart.quantity) - 1;
+          const updatedPart = await Parts.findOneAndUpdate(
+            {
+              _id: ObjectId(id),
+            },
+            { $set: { serial: foundPart.serial, quantity: foundPart.quantity } }
+          );
+
+          if (updatedPart.ok === 1) {
+            res.json({
+              status: 200,
+              msg: "Successfully updated part",
+            });
+          } else {
+            res.send(400);
+          }
+        } else {
+          res.send(400);
+        }
+      }
+
       break;
     }
     default: {

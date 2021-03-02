@@ -115,6 +115,16 @@ export default function Home({ parts }) {
     }
   };
 
+  const removeSerial = async (id, serial) => {
+    const removedSerial = await axios.post(`/api/parts/serial/delete/${id}`, {
+      serial: serial,
+    });
+
+    if (removedSerial) {
+      Router.reload(window.location.pathname);
+    }
+  };
+
   const css = `
     .hidden {
       display: none;
@@ -245,23 +255,37 @@ export default function Home({ parts }) {
 
                         {part.serial[0] && (
                           <>
-                            <Table.Row id={part.part_num} className="hidden">
+                            <Table.Row
+                              id={part.part_num}
+                              className="hidden"
+                              active
+                            >
                               <Table.Cell>
-                                <Label ribbon>Serials</Label>
+                                <Label ribbon color="red">
+                                  Serials
+                                </Label>
                               </Table.Cell>
                               <Table.Cell>
                                 <List>
                                   {part.serial.map((serial) => (
                                     <List.Item key={serial}>
-                                      {serial}{" "}
+                                      {serial}
                                       <Icon
                                         name="trash alternate"
                                         color="red"
+                                        className={styles.iconHover}
+                                        onClick={() => {
+                                          removeSerial(part._id, serial);
+                                        }}
                                       />
                                     </List.Item>
                                   ))}
                                 </List>
                               </Table.Cell>
+                              <Table.Cell></Table.Cell>
+                              <Table.Cell></Table.Cell>
+                              <Table.Cell></Table.Cell>
+                              <Table.Cell></Table.Cell>
                             </Table.Row>
                           </>
                         )}

@@ -139,10 +139,11 @@ export default function EditPartById({ part, categories }) {
                   <label>Serial:</label>
                   <Input
                     className={styles.fullWidth}
-                    onChange={(e) => {
-                      setSerial(e.target.value);
-                    }}
-                    value={serial}
+                    // onChange={(e) => {
+                    //   setSerial(e.target.value);
+                    // }}
+                    value={"Unavailable at this time"}
+                    disabled
                   />
                 </Grid.Column>
                 <Grid.Column>
@@ -188,14 +189,26 @@ export default function EditPartById({ part, categories }) {
                 <Grid.Column>
                   <div>
                     <label>Quantity:</label>
-                    <Input
-                      type="number"
-                      className={styles.fullWidth}
-                      onChange={(e) => {
-                        setQuantity(e.target.value);
-                      }}
-                      value={quantity}
-                    />
+                    {serial[0] ? (
+                      <Input
+                        type="number"
+                        className={styles.fullWidth}
+                        onChange={(e) => {
+                          setQuantity(e.target.value);
+                        }}
+                        value={quantity}
+                        disabled
+                      />
+                    ) : (
+                      <Input
+                        type="number"
+                        className={styles.fullWidth}
+                        onChange={(e) => {
+                          setQuantity(e.target.value);
+                        }}
+                        value={quantity}
+                      />
+                    )}
                   </div>
                 </Grid.Column>
               </Grid.Row>
