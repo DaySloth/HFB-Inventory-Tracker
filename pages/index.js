@@ -14,13 +14,14 @@ import {
   List,
 } from "semantic-ui-react";
 import { useSession } from "next-auth/client";
-import { connectToDatabase } from "../util/mongodb";
+import db from "../util/firebase.config";
 import React, { useEffect, useState } from "react";
 import styles from "../styles/Home.module.css";
 import Loader from "../components/loader";
 import axios from "axios";
 
-export default function Home({ parts }) {
+export default function Home({ users }) {
+  console.log(Object.keys(users));
   const [session, loading] = useSession();
   const [modalActions, setModalActions] = useState({
     action: "",
@@ -54,77 +55,6 @@ export default function Home({ parts }) {
     }
   }, [loading]);
 
-  const editInventory = async () => {
-    switch (modalActions.action) {
-      case "add": {
-        try {
-          const added = await axios.post(`/api/parts/add/${modalActions.id}`, {
-            amount: parseInt(modalActions.count),
-          });
-
-          if (added.data.status === 200) {
-            //success
-            dispatch({ type: "close" });
-            setModalActions({
-              action: "",
-              message: "",
-              count: 0,
-            });
-            Router.reload(window.location.pathname);
-          } else {
-            //failure
-            setError("There was an error adding this part");
-          }
-        } catch (error) {
-          //error
-          setError("There was an error adding this part");
-        }
-        break;
-      }
-      case "subtract": {
-        try {
-          const subtracted = await axios.post(
-            `/api/parts/subtract/${modalActions.id}`,
-            {
-              amount: parseInt(modalActions.count),
-            }
-          );
-
-          if (subtracted.data.status === 200) {
-            //success
-            dispatch({ type: "close" });
-            setModalActions({
-              action: "",
-              message: "",
-              count: 0,
-            });
-            Router.reload(window.location.pathname);
-          } else {
-            //failure
-            setError(subtracted.data.msg);
-          }
-        } catch (error) {
-          //error
-          setError("There was an error subtracting this part");
-        }
-        break;
-      }
-      default: {
-        //do something
-      }
-    }
-  };
-
-  const removeSerial = async (id, serial) => {
-    const removedSerial = await axios.post(`/api/parts/serial/delete/${id}`, {
-      serial: serial,
-    });
-
-    if (removedSerial) {
-      Router.reload(window.location.pathname);
-    }
-  };
-
   const css = `
     .hidden {
       display: none;
@@ -139,20 +69,20 @@ export default function Home({ parts }) {
       {session && (
         <>
           <Head>
-            <title>HFB Inventory | Warehouse</title>
+            <title>HFB Mobile Manager</title>
           </Head>
 
           <NavHeader />
 
           <div className={styles.center}>
             <Header as="h2" icon>
-              <Icon name="warehouse" />
-              Warehouse
+              <Icon name="mobile alternate" />
+              Users
             </Header>
           </div>
 
           <hr />
-          {parts[0] ? (
+          {users ? (
             <>
               {/* <div className={styles.container}>
                 <Input
@@ -166,129 +96,31 @@ export default function Home({ parts }) {
                 <Table celled>
                   <Table.Header>
                     <Table.Row>
-                      <Table.HeaderCell>Brand</Table.HeaderCell>
-                      <Table.HeaderCell>Part Name</Table.HeaderCell>
-                      <Table.HeaderCell>Part Number</Table.HeaderCell>
-                      <Table.HeaderCell>Category</Table.HeaderCell>
-                      <Table.HeaderCell>Quantity</Table.HeaderCell>
+                      <Table.HeaderCell>First Name</Table.HeaderCell>
+                      <Table.HeaderCell>Last Name</Table.HeaderCell>
+                      <Table.HeaderCell>Email</Table.HeaderCell>
+                      <Table.HeaderCell>Username</Table.HeaderCell>
+                      <Table.HeaderCell>Password</Table.HeaderCell>
                       <Table.HeaderCell textAlign="center">
                         Edit
                       </Table.HeaderCell>
                     </Table.Row>
                   </Table.Header>
                   <Table.Body>
-                    {parts.map((part) => (
+                    {Object.keys(users).map((user) => (
                       <>
-                        <Table.Row
-                          key={part._id}
-                          error={parseInt(part.quantity) === 0 ? true : false}
-                        >
-                          <Table.Cell>{part.brand}</Table.Cell>
-                          <Table.Cell>{part.part_name}</Table.Cell>
-                          <Table.Cell>{part.part_num}</Table.Cell>
-                          <Table.Cell>{part.category}</Table.Cell>
-                          <Table.Cell>{part.quantity}</Table.Cell>
+                        <Table.Row key={users[user].email}>
+                          <Table.Cell>{users[user].first_name}</Table.Cell>
+                          <Table.Cell>{users[user].last_name}</Table.Cell>
+                          <Table.Cell>{users[user].email}</Table.Cell>
+                          <Table.Cell>{user}</Table.Cell>
                           <Table.Cell>
-                            <div className={styles.centerText}>
-                              {part.serial[0] ? (
-                                <Icon
-                                  name="caret down"
-                                  className={styles.iconHover}
-                                  onClick={(e) => {
-                                    document
-                                      .getElementById(part.part_num)
-                                      .classList.toggle("hidden");
-                                    if (e.target.classList.contains("down")) {
-                                      e.target.classList.add("up");
-                                      e.target.classList.remove("down");
-                                    } else {
-                                      e.target.classList.add("down");
-                                      e.target.classList.remove("up");
-                                    }
-                                  }}
-                                />
-                              ) : (
-                                <>
-                                  <Icon
-                                    name="plus"
-                                    className={styles.iconHover}
-                                    color="green"
-                                    onClick={() => {
-                                      setModalActions({
-                                        ...modalActions,
-                                        action: "add",
-                                        message:
-                                          "How many would you like to add?",
-                                        id: part._id,
-                                        part: part.part_num,
-                                      });
-                                      dispatch({
-                                        type: "open",
-                                        size: "mini",
-                                      });
-                                    }}
-                                  />
-                                  <Icon
-                                    name="minus"
-                                    className={styles.iconHover}
-                                    color="red"
-                                    onClick={() => {
-                                      setModalActions({
-                                        ...modalActions,
-                                        action: "subtract",
-                                        message:
-                                          "How many would you like to subtract?",
-                                        id: part._id,
-                                        part: part.part_num,
-                                      });
-                                      dispatch({
-                                        type: "open",
-                                        size: "mini",
-                                      });
-                                    }}
-                                  />
-                                </>
-                              )}
-                            </div>
+                            {"**********"}
+                          </Table.Cell>
+                          <Table.Cell textAlign="center">
+                            <Icon name="edit" className={styles.iconHover} />
                           </Table.Cell>
                         </Table.Row>
-
-                        {part.serial[0] && (
-                          <>
-                            <Table.Row
-                              id={part.part_num}
-                              className="hidden"
-                              active
-                            >
-                              <Table.Cell>
-                                <Label ribbon color="red">
-                                  Serials
-                                </Label>
-                              </Table.Cell>
-                              <Table.Cell>
-                                <List>
-                                  {part.serial.map((serial) => (
-                                    <List.Item key={serial}>
-                                      {serial}
-                                      <Icon
-                                        name="trash alternate"
-                                        color="red"
-                                        className={styles.iconHover}
-                                        onClick={() => {
-                                          removeSerial(part._id, serial);
-                                        }}
-                                      />
-                                    </List.Item>
-                                  ))}
-                                </List>
-                              </Table.Cell>
-                              <Table.Cell></Table.Cell>
-                              <Table.Cell></Table.Cell>
-                              <Table.Cell></Table.Cell>
-                              <Table.Cell></Table.Cell>
-                            </Table.Row>
-                          </>
-                        )}
                       </>
                     ))}
                   </Table.Body>
@@ -299,10 +131,10 @@ export default function Home({ parts }) {
             <Segment placeholder>
               <Header icon>
                 <Icon name="bath" />
-                No parts are currently in the warehouse
+                No users in the database
               </Header>
               <Button primary href="/parts/add-a-part">
-                Add Parts
+                Add a User
               </Button>
             </Segment>
           )}
@@ -373,12 +205,11 @@ export default function Home({ parts }) {
 }
 
 export async function getServerSideProps() {
-  const { db } = await connectToDatabase();
-  let parts = await db.collection("parts").find({}).toArray();
+  let users = await db.ref(`/users/`).once("value");
 
   return {
     props: {
-      parts: JSON.parse(JSON.stringify(parts)),
+      users: users.val(),
     },
   };
 }

@@ -149,7 +149,8 @@ export default function SignUp() {
                         label="Temporary Password"
                         className={styles.topBottomSpacing}
                         onChange={() => setTempPassword(!tempPassword)}
-                        disabled
+                        value={tempPassword}
+                        
                     />
 
                     <Form.Input

@@ -7,19 +7,19 @@ import { signOut, useSession } from "next-auth/client";
 export default function Header() {
     const [session, loading] = useSession();
     const router = useRouter();
-    const options = [
-        { key: 1, text: "View Warehouse", value: "/" },
-        {
-            key: 2,
-            text: "Add a part",
-            value: "/parts/add-a-part",
-        },
-        {
-            key: 3,
-            text: "Edit a part",
-            value: "/parts/edit-a-part",
-        },
-    ];
+    // const options = [
+    //     { key: 1, text: "View Users", value: "/" },
+    //     {
+    //         key: 2,
+    //         text: "Add a part",
+    //         value: "/parts/add-a-part",
+    //     },
+    //     {
+    //         key: 3,
+    //         text: "Edit a part",
+    //         value: "/parts/edit-a-part",
+    //     },
+    // ];
 
     return (
         <nav className={styles.mainNav}>
@@ -35,10 +35,10 @@ export default function Header() {
                         </Link>
                     </Grid.Column>
                     <Grid.Column>
-                        <h2>Inventory Management</h2>
+                        <h2>HFB Mobile Manager</h2>
                     </Grid.Column>
                     <Grid.Column>
-                        <div className={styles.floatLeft}>
+                        {/* <div className={styles.floatLeft}>
                             <Menu compact>
                                 <Dropdown
                                     text="Menu"
@@ -50,7 +50,7 @@ export default function Header() {
                                     }}
                                 />
                             </Menu>
-                        </div>
+                        </div> */}
                         <div className={styles.floatRight}>
                             <h3>
                                 Hello {session.user.name},{" "}
