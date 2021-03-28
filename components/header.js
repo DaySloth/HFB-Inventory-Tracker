@@ -8,17 +8,17 @@ export default function Header() {
   const [session, loading] = useSession();
   const router = useRouter();
   const options = [
-      { key: 1, text: "View Users", value: "/" },
-      {
-          key: 2,
-          text: "Add a User",
-          value: "/users/add-a-user",
-      },
-      {
-          key: 3,
-          text: "Edit Admin Account",
-          value: "/users/edit-admin",
-      },
+    { key: 1, text: "View Users", value: "/" },
+    {
+      key: 2,
+      text: "Add a User",
+      value: "/users/add-a-user",
+    },
+    {
+      key: 3,
+      text: "Edit Admin Account",
+      value: "/users/edit-admin",
+    },
   ];
 
   return (
