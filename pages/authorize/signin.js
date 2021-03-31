@@ -33,7 +33,6 @@ export default function SignIn() {
             icon="user"
             iconPosition="left"
             label="Username"
-            type="email"
             placeholder="Username"
             onChange={(event) => setUsername(event.target.value)}
             value={username}
