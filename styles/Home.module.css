@@ -65,6 +65,10 @@
   float: right;
 }
 
+.block {
+  display: block;
+}
+
 .centerButton {
   text-align: center;
   margin-top: 20px;

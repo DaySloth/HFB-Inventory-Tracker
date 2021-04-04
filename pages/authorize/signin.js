@@ -16,7 +16,7 @@ export default function SignIn() {
   return (
     <>
       <Head>
-        <title>HFB Inventory | Signin</title>
+        <title>HFB Mobile Manager | Signin</title>
       </Head>
 
       <div className={styles.container}>
