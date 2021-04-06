@@ -16,9 +16,10 @@ export default async (req, res) => {
         .then((result) => {
           if (result.val()) {
             //error
+            console.log("error");
           } else {
             db.ref(`/users/${username}`)
-              .create(req.body)
+              .set(req.body)
               .then((result) => {
                 console.log(result);
               });

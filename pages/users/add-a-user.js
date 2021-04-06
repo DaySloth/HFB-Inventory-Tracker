@@ -60,6 +60,7 @@ export default function SignUp() {
         email: email,
         password: password,
         tempPassword: tempPassword,
+        hasManagerAccess: webAccess,
       };
 
       try {
@@ -160,20 +161,22 @@ export default function SignUp() {
                 value={email}
                 required
               />
-
-              <Checkbox
-                label="Temporary Password"
-                className={styles.topBottomSpacing}
-                onChange={() => setTempPassword(!tempPassword)}
-                checked={tempPassword}
-              />
-
-              <Checkbox
-                label="Has Web Manager Access"
-                className={styles.topBottomSpacing}
-                onChange={() => setWebAccess(!webAccess)}
-                checked={webAccess}
-              />
+              <div className={styles.block}>
+                <Checkbox
+                  label="Temporary Password"
+                  className={styles.topBottomSpacing}
+                  onChange={() => setTempPassword(!tempPassword)}
+                  checked={tempPassword}
+                />
+              </div>
+              <div className={styles.block}>
+                <Checkbox
+                  label="Has Web Manager Access"
+                  className={styles.topBottomSpacing}
+                  onChange={() => setWebAccess(!webAccess)}
+                  checked={webAccess}
+                />
+              </div>
 
               <Form.Input
                 icon="lock"
