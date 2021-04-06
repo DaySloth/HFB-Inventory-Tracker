@@ -64,24 +64,25 @@ export default function SignUp() {
       };
 
       try {
-        const data = await axios.post("/api/mobile/users/create", newUser);
+        const { data } = await axios.post("/api/mobile/users/create", newUser);
         setButtonLoading(false);
-        // if (newUser.status) {
-        //   if (newUser.status === 400) {
-        //     //set error message
-        //     setPageMessage({
-        //       color: "red",
-        //       message: newUser.msg,
-        //     });
-        //   } else if (newUser.status === 200) {
-        //     //set success message
-        //     clearForm();
-        //     setPageMessage({
-        //       color: "green",
-        //       message: newUser.msg,
-        //     });
-        //   }
-        // }
+        console.log(data);
+        if (data.status) {
+          if (data.status === 400) {
+            //set error message
+            setPageMessage({
+              color: "red",
+              message: data.message,
+            });
+          } else if (data.status === 200) {
+            //set success message
+            clearForm();
+            setPageMessage({
+              color: "green",
+              message: data.message,
+            });
+          }
+        }
       } catch (error) {
         //set error message
         setButtonLoading(false);
@@ -109,6 +110,7 @@ export default function SignUp() {
     setPasswordError("");
     setPageMessage("");
     setTempPassword(false);
+    setWebAccess(false);
   };
 
   return (

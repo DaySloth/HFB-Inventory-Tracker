@@ -15,13 +15,14 @@ export default async (req, res) => {
         .once("value")
         .then((result) => {
           if (result.val()) {
-            //error
-            console.log("error");
+            res.json({ status: 400, message: "User already exists" });
+            res.end();
           } else {
             db.ref(`/users/${username}`)
               .set(req.body)
               .then((result) => {
-                console.log(result);
+                res.json({ status: 200, message: "Successfully created user" });
+                res.end();
               });
           }
         });
