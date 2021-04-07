@@ -57,7 +57,6 @@ export default function Header() {
                 <span
                   className={styles.logout}
                   onClick={() => {
-                    window.location.href = "/authorize/signin";
                     signOut();
                   }}
                 >
