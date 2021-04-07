@@ -54,7 +54,13 @@ export default function Header() {
             <div className={styles.floatRight}>
               <h3>
                 Hello {session.user.name},{" "}
-                <span className={styles.logout} onClick={() => signOut()}>
+                <span
+                  className={styles.logout}
+                  onClick={() => {
+                    window.location.href = "/authorize/signin";
+                    signOut();
+                  }}
+                >
                   Logout
                 </span>
               </h3>

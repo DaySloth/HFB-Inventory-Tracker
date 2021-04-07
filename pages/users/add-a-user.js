@@ -17,6 +17,14 @@ import Loader from "../../components/loader";
 export default function SignUp() {
   const [session, loading] = useSession();
 
+  useEffect(() => {
+    if (!loading) {
+      if (!session) {
+        window.location.href = "/authorize/signin";
+      }
+    }
+  }, [loading]);
+
   const [first_name, setFirstName] = useState("");
   const [last_name, setLastName] = useState("");
   const [email, setEmail] = useState("");

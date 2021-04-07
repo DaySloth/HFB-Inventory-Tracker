@@ -1,12 +1,13 @@
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import {
-	Button,
-	Form,
-	Message,
-	Checkbox,
-	Header,
-	Icon,
+  Button,
+  Form,
+  Message,
+  Checkbox,
+  Header,
+  Icon,
+  Segment,
 } from "semantic-ui-react";
 import styles from "../../../styles/Home.module.css";
 import axios from "axios";
@@ -16,185 +17,307 @@ import Loader from "../../../components/loader";
 import db from "../../../util/firebase.config";
 import { useRouter } from "next/router";
 
-export default function EditUser({ user }) {
-	const Router = useRouter();
-	const [session, loading] = useSession();
+export default function EditUser({ dbUser }) {
+  const Router = useRouter();
+  const [session, loading] = useSession();
 
-	const [first_name, setFirstName] = useState(user.first_name);
-	const [last_name, setLastName] = useState(user.last_name);
-	const [email, setEmail] = useState(user.email);
-	const [resetPassword, setResetPassword] = useState(false);
-	const [webAccess, setWebAccess] = useState(user.hasManagerAccess);
-	const [password, setPassword] = useState("");
-	const [confirmPassword, setConfirmPassword] = useState("");
-	const [passwordError, setPasswordError] = useState();
-	const [pageMessage, setPageMessage] = useState();
-	const [isDifferent, setIsDifferent] = useState(false);
+  useEffect(() => {
+    if (!loading) {
+      if (!session) {
+        window.location.href = "/authorize/signin";
+      }
+    }
+  }, [loading]);
 
-	const [buttonLoading, setButtonLoading] = useState(false);
+  const user = dbUser || {};
 
-	useEffect(() => {
-		if (
-			first_name !== user.first_name ||
-			last_name !== user.last_name ||
-			email !== user.email ||
-			webAccess !== user.hasManagerAccess ||
-			resetPassword
-		) {
-			setIsDifferent(true);
-		} else {
-			setIsDifferent(false);
-		}
-	}, [first_name, last_name, email, webAccess, resetPassword]);
+  const [first_name, setFirstName] = useState(user.first_name);
+  const [last_name, setLastName] = useState(user.last_name);
+  const [email, setEmail] = useState(user.email);
+  const [resetPassword, setResetPassword] = useState(user.tempPassword);
+  const [webAccess, setWebAccess] = useState(user.hasManagerAccess);
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [passwordError, setPasswordError] = useState();
+  const [pageMessage, setPageMessage] = useState();
+  const [isDifferent, setIsDifferent] = useState(false);
 
-	async function saveEdit(e) {
-		e.preventDefault();
-	}
+  const [buttonLoading, setButtonLoading] = useState(false);
 
-	async function removeUser(e) {
-		e.preventDefault();
-	}
+  useEffect(() => {
+    if (
+      first_name !== user.first_name ||
+      last_name !== user.last_name ||
+      email !== user.email ||
+      webAccess !== user.hasManagerAccess ||
+      resetPassword
+    ) {
+      setIsDifferent(true);
+    } else {
+      setIsDifferent(false);
+    }
+  }, [first_name, last_name, email, webAccess, resetPassword]);
 
-	return (
-		<>
-			{loading && <Loader />}
-			{session && (
-				<>
-					<Head>
-						<title>HFB Mobile Manager</title>
-					</Head>
+  useEffect(() => {
+    if (confirmPassword) {
+      if (confirmPassword !== password) {
+        setPasswordError("Passwords do not match");
+      } else if (confirmPassword === password) {
+        setPasswordError("");
+      }
+    } else {
+      setPasswordError("");
+    }
+  }, [confirmPassword]);
 
-					<NavHeader />
+  async function saveEdit(e) {
+    e.preventDefault();
+    setButtonLoading(true);
+    setPageMessage("");
+    setPasswordError("");
 
-					<div className={styles.center}>
-						<Header as="h2" icon>
-							<Icon name="edit outline" />
-							Edit User
-						</Header>
-					</div>
+    const updatedUser = {
+      first_name: first_name,
+      last_name: last_name,
+      email: email,
+      hasManagerAccess: webAccess,
+      tempPassword: resetPassword,
+    };
 
-					<hr />
+    if (resetPassword) {
+      if (!passwordError) {
+        if (password.trim()) {
+          updatedUser.password = password;
+        } else {
+          setPasswordError("Password cannot be blank");
+          setButtonLoading(false);
+          return;
+        }
+      } else {
+        setButtonLoading(false);
+        return;
+      }
+    }
 
-					<div className={styles.container}>
-						<Form>
-							<Form.Input
-								icon="user"
-								iconPosition="left"
-								label="First Name"
-								type="text"
-								placeholder="First name"
-								onChange={(event) => setFirstName(event.target.value)}
-								value={first_name}
-								required
-							/>
+    if (
+      `${first_name.toLowerCase()}${last_name.toLowerCase()}` !==
+      `${user.first_name.toLowerCase()}${user.last_name.toLowerCase()}`
+    ) {
+      updatedUser.oldUsername = `${user.first_name.toLowerCase()}${user.last_name.toLowerCase()}`;
+    }
+    const { data } = await axios.post(
+      `/api/mobile/users/update/${first_name.toLowerCase()}${last_name.toLowerCase()}`,
+      updatedUser
+    );
+    if (data.status) {
+      if (data.status === 400) {
+        //set error message
+        setPageMessage({
+          color: "red",
+          message: data.message,
+        });
+        setButtonLoading(false);
+      } else if (data.status === 200) {
+        //set success message
+        setPageMessage({
+          color: "green",
+          message: data.message,
+        });
+        setButtonLoading(false);
+      }
+    }
+  }
 
-							<Form.Input
-								label="Last Name"
-								type="text"
-								placeholder="Last name"
-								onChange={(event) => setLastName(event.target.value)}
-								value={last_name}
-								required
-							/>
+  async function removeUser(e) {
+    e.preventDefault();
+    const { data } = await axios.get(
+      `/api/mobile/users/delete/${first_name.toLowerCase()}${last_name.toLowerCase()}`
+    );
+    if (data.status) {
+      if (data.status === 400) {
+        //set error message
+        setPageMessage({
+          color: "red",
+          message: data.message,
+        });
+        setButtonLoading(false);
+      } else if (data.status === 200) {
+        //set success message
+        setPageMessage({
+          color: "green",
+          message: data.message,
+        });
+        setButtonLoading(false);
+        window.location.href = "/";
+      }
+    }
+  }
 
-							<Form.Input
-								label="Email"
-								type="email"
-								placeholder="User@email.com"
-								onChange={(event) => setEmail(event.target.value)}
-								value={email}
-								required
-							/>
+  return (
+    <>
+      {loading && <Loader />}
+      {session && (
+        <>
+          <Head>
+            <title>HFB Mobile Manager</title>
+          </Head>
 
-							<div className={styles.block}>
-								<Checkbox
-									label="Has Web Manager Access"
-									className={styles.topBottomSpacing}
-									onChange={() => setWebAccess(!webAccess)}
-									checked={webAccess}
-								/>
-							</div>
-							{resetPassword && (
-								<>
-									<Form.Input
-										icon="lock"
-										iconPosition="left"
-										label="New Temporary Password"
-										type="password"
-										onChange={(event) => setPassword(event.target.value)}
-										className={passwordError && styles.redGlowingBorder}
-										value={password}
-										required
-									/>
+          <NavHeader />
 
-									<Form.Input
-										icon="lock"
-										iconPosition="left"
-										label="Confirm Temporary Password"
-										type="password"
-										onChange={(event) => setConfirmPassword(event.target.value)}
-										value={confirmPassword}
-										className={passwordError && styles.redGlowingBorder}
-										required
-									/>
+          <div className={styles.center}>
+            <Header as="h2" icon>
+              <Icon name="edit outline" />
+              Edit User
+            </Header>
+          </div>
 
-									{passwordError && (
-										<>
-											<h5 className={styles.redText}>{passwordError}</h5>
-										</>
-									)}
-								</>
-							)}
+          <hr />
 
-							{pageMessage && (
-								<>
-									<Message color={pageMessage.color}>
-										<Message.Header>{pageMessage.message}</Message.Header>
-									</Message>
-								</>
-							)}
+          <div className={styles.container}>
+            {user.first_name ? (
+              <Form>
+                <Form.Input
+                  icon="user"
+                  iconPosition="left"
+                  label="First Name"
+                  type="text"
+                  placeholder="First name"
+                  onChange={(event) => setFirstName(event.target.value)}
+                  value={first_name}
+                  required
+                />
 
-							<div className={styles.center} style={{ width: "400px" }}>
-								<Button.Group>
-									<Button icon="trash" content="Delete User" color="red" />
-									<Button
-										content={resetPassword ? "Cancel Reset" : "Reset Password"}
-										onClick={(e) => {
-											setResetPassword(!resetPassword);
-										}}
-										color={resetPassword ? "blue" : "orange"}
-										className={styles.floatLeft}
-										loading={buttonLoading}
-									/>
+                <Form.Input
+                  label="Last Name"
+                  type="text"
+                  placeholder="Last name"
+                  onChange={(event) => setLastName(event.target.value)}
+                  value={last_name}
+                  required
+                />
 
-									{isDifferent && (
-										<Button
-											icon="save"
-											color="green"
-											content="Save Edit"
-											onClick={(e) => {
-												saveEdit(e);
-											}}
-											className={styles.floatLeft}
-											loading={buttonLoading}
-										/>
-									)}
-								</Button.Group>
-							</div>
-						</Form>
-					</div>
-				</>
-			)}
-		</>
-	);
+                <Form.Input
+                  label="Email"
+                  type="email"
+                  placeholder="User@email.com"
+                  onChange={(event) => setEmail(event.target.value)}
+                  value={email}
+                  required
+                />
+
+                <div className={styles.block}>
+                  <Checkbox
+                    label="Has Web Manager Access"
+                    className={styles.topBottomSpacing}
+                    onChange={() => setWebAccess(!webAccess)}
+                    checked={webAccess}
+                  />
+                </div>
+                {resetPassword && (
+                  <>
+                    <Form.Input
+                      icon="lock"
+                      iconPosition="left"
+                      label="New Temporary Password"
+                      type="password"
+                      onChange={(event) => setPassword(event.target.value)}
+                      className={passwordError && styles.redGlowingBorder}
+                      value={password}
+                      required
+                    />
+
+                    <Form.Input
+                      icon="lock"
+                      iconPosition="left"
+                      label="Confirm Temporary Password"
+                      type="password"
+                      onChange={(event) =>
+                        setConfirmPassword(event.target.value)
+                      }
+                      value={confirmPassword}
+                      className={passwordError && styles.redGlowingBorder}
+                      required
+                    />
+
+                    {passwordError && (
+                      <>
+                        <h5 className={styles.redText}>{passwordError}</h5>
+                      </>
+                    )}
+                  </>
+                )}
+
+                {pageMessage && (
+                  <>
+                    <Message color={pageMessage.color}>
+                      <Message.Header>{pageMessage.message}</Message.Header>
+                    </Message>
+                  </>
+                )}
+
+                <div className={styles.center} style={{ width: "400px" }}>
+                  <Button.Group>
+                    <Button
+                      icon="trash"
+                      content="Delete User"
+                      color="red"
+                      onClick={(e) => {
+                        removeUser(e);
+                      }}
+                    />
+                    <Button
+                      content={
+                        resetPassword ? "Cancel Reset" : "Reset Password"
+                      }
+                      onClick={(e) => {
+                        setResetPassword(!resetPassword);
+                      }}
+                      color={resetPassword ? "blue" : "orange"}
+                    />
+
+                    {isDifferent && (
+                      <Button
+                        icon="save"
+                        color="green"
+                        content="Save Edit"
+                        onClick={(e) => {
+                          saveEdit(e);
+                        }}
+                        loading={buttonLoading}
+                      />
+                    )}
+                  </Button.Group>
+                </div>
+              </Form>
+            ) : (
+              <Segment placeholder>
+                <Header icon>
+                  <Icon name="user" />
+                  No user found
+                </Header>
+                <Button
+                  primary
+                  onClick={() => {
+                    window.location.href = "/users/add-a-user";
+                  }}
+                >
+                  Add User
+                </Button>
+              </Segment>
+            )}
+          </div>
+        </>
+      )}
+    </>
+  );
 }
 
 export async function getServerSideProps({ params }) {
-	let user = await db.ref(`/users/${params.user}`).once("value");
+  let user = await db.ref(`/users/${params.user}`).once("value");
 
-	return {
-		props: {
-			user: user.val(),
-		},
-	};
+  return {
+    props: {
+      dbUser: user.val(),
+    },
+  };
 }
