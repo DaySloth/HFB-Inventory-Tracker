@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
-import NavHeader from "../components/header.js";
+import NavHeader from "../../components/header.js";
 import {
   Icon,
   Table,
@@ -14,13 +14,12 @@ import {
   List,
 } from "semantic-ui-react";
 import { useSession } from "next-auth/client";
-import db from "../util/firebase.config";
 import React, { useEffect, useState } from "react";
-import styles from "../styles/Home.module.css";
-import Loader from "../components/loader";
+import styles from "../../styles/Home.module.css";
+import Loader from "../../components/loader";
 import axios from "axios";
 
-export default function Home({ users }) {
+export default function Products({ products }) {
   const Router = useRouter();
   const [session, loading] = useSession();
 
@@ -32,15 +31,8 @@ export default function Home({ users }) {
     }
   }, [loading]);
 
-  const css = `
-    .hidden {
-      display: none;
-    }
-  `;
-
   return (
     <>
-      <style>{css}</style>
       {loading && <Loader />}
 
       {session && (
@@ -53,13 +45,13 @@ export default function Home({ users }) {
 
           <div className={styles.center}>
             <Header as="h2" icon>
-              <Icon name="mobile alternate" />
-              Users
+              <Icon name="warehouse" />
+              Products
             </Header>
           </div>
 
           <hr />
-          {users ? (
+          {products ? (
             <>
               {/* <div className={styles.container}>
                 <Input
@@ -124,25 +116,15 @@ export default function Home({ users }) {
             <Segment placeholder>
               <Header icon>
                 <Icon name="bath" />
-                No users in the database
+                Products page currently not completed...
               </Header>
-              <Button primary href="/users/add-a-user">
+              {/* <Button primary href="/users/add-a-user">
                 Add a User
-              </Button>
+              </Button> */}
             </Segment>
           )}
         </>
       )}
     </>
   );
-}
-
-export async function getServerSideProps() {
-  let users = await db.ref(`/users/`).once("value");
-
-  return {
-    props: {
-      users: users.val(),
-    },
-  };
 }

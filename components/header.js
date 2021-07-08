@@ -16,8 +16,13 @@ export default function Header() {
     },
     {
       key: 3,
-      text: "Edit Admin Account",
-      value: "/users/edit-admin",
+      text: "Products",
+      value: "/products",
+    },
+    {
+      key: 4,
+      text: "Add Product",
+      value: "/products/add-a-product",
     },
   ];
 
