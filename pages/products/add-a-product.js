@@ -89,3 +89,16 @@ export default function AddAProduct({ products }) {
     </>
   );
 }
+
+export async function getServerSideProps() {
+  const { data: products } = await axios.get(
+    "http://localhost:3001/api/products"
+  );
+
+  return {
+    props: {
+      products: products,
+      categories: "Not quite there yet",
+    },
+  };
+}
