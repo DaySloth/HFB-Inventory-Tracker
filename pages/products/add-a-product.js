@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import NavHeader from "../../components/header.js";
 import {
   Icon,
+  Dropdown,
   Table,
   Header,
   Input,
@@ -22,9 +23,30 @@ import styles from "../../styles/Home.module.css";
 import Loader from "../../components/loader";
 import axios from "axios";
 
-export default function AddAProduct({ products }) {
+export default function AddAProduct({ products, categories }) {
   const Router = useRouter();
   const [session, loading] = useSession();
+  const selectCategories = categories.map((category) => {
+    return { key: category[0], text: category, value: category };
+  });
+  selectCategories.push({
+    key: 123,
+    text: "Add new category",
+    value: "create category",
+  });
+
+  const [newProduct, setNewProduct] = useState({
+    title: "",
+    price: "",
+    quantity: "",
+    category: "",
+    sub_category: "",
+    finish: "",
+    length: "",
+    width: "",
+    height: "",
+    image: "",
+  });
 
   useEffect(() => {
     if (!loading) {
@@ -54,21 +76,39 @@ export default function AddAProduct({ products }) {
           </div>
 
           <hr />
-          {true ? (
+
+          {products ? (
             <>
               <div className={styles.tableContainer}>
                 <Form>
                   <Form.Group widths="equal">
-                    <Form.Input
-                      fluid
-                      label="First name"
-                      placeholder="First name"
-                    />
-                    <Form.Input
-                      fluid
-                      label="Last name"
-                      placeholder="Last name"
-                    />
+                    {newProduct.category === "create category" ? (
+                      <Form.Input fluid label="New Category" />
+                    ) : (
+                      <Form.Select
+                        fluid
+                        label="Category"
+                        options={selectCategories}
+                        onChange={(e, { value }) =>
+                          setNewProduct({ ...newProduct, category: value })
+                        }
+                      />
+                    )}
+                    <Form.Input fluid label="Title" />
+                  </Form.Group>
+                  <Form.Group widths="equal">
+                    <Form.Input fluid label="Finish" />
+                    <Form.Input fluid label="Length" type="number" />
+                    <Form.Input fluid label="Width" type="number" />
+                    <Form.Input fluid label="Height" type="number" />
+                  </Form.Group>
+                  <Form.Group widths="equal">
+                    <Form.Input fluid label="Part #" />
+                    <Form.Input fluid label="Price" type="number" />
+                    <Form.Input fluid label="Quantity" type="number" />
+                  </Form.Group>
+                  <Form.Group widths="equal">
+                    <Button type="submit" color="green">Submit</Button>
                   </Form.Group>
                 </Form>
               </div>
@@ -95,10 +135,12 @@ export async function getServerSideProps() {
     "http://localhost:3001/api/products"
   );
 
+  console.log(products);
+
   return {
     props: {
       products: products,
-      categories: "Not quite there yet",
+      categories: ["Doors", "Wall Systems"],
     },
   };
 }
